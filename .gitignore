@@ -1,0 +1,14 @@
+.project
+.classpath
+.settings
+target/
+.log*
+*.db
+
+*.iml
+*.ipr
+*.iws
+projectFilesBackup
+
+
+
