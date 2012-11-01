@@ -6,9 +6,6 @@ package org.diveintojee.poc.domain.business;
 import org.diveintojee.poc.domain.AbstractEntity;
 import org.diveintojee.poc.domain.validation.ValidationContext;
 
-import fr.midipascher.domain.AbstractEntity;
-import fr.midipascher.domain.validation.ValidationContext;
-
 /**
  * @author louis.gueye@gmail.com
  */

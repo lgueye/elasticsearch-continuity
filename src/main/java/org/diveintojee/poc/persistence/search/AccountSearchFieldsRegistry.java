@@ -3,7 +3,7 @@ package org.diveintojee.poc.persistence.search;
 /**
  * @author louis.gueye@gmail.com
  */
-public class RestaurantSearchFieldsRegistry {
+public class AccountSearchFieldsRegistry {
 
     public static final String NAME = "name";
     public static final String DESCRIPTION = "description";

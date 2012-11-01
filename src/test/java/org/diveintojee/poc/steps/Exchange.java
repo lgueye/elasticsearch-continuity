@@ -13,6 +13,7 @@ import com.sun.jersey.client.apache4.ApacheHttpClient4;
 import com.sun.jersey.client.apache4.config.DefaultApacheHttpClient4Config;
 
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
+import org.diveintojee.poc.domain.Account;
 import org.diveintojee.poc.domain.ResponseError;
 import org.junit.Assert;
 
@@ -20,9 +21,6 @@ import java.net.URI;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import fr.midipascher.domain.FoodSpecialty;
-import fr.midipascher.domain.ResponseError;
-import fr.midipascher.domain.Restaurant;
 
 /**
  * User: louis.gueye@gmail.com Date: 24/08/12 Time: 01:14
@@ -172,10 +170,7 @@ public class Exchange {
         inactivateEntity();
     }
 
-    public List<Restaurant> restaurantsFromResponse() {
-        return this.clientResponse.getEntity(new GenericType<List<Restaurant>>() {});
-    }
-    public List<FoodSpecialty> foodSpcialtiesFromResponse() {
-        return this.clientResponse.getEntity(new GenericType<List<FoodSpecialty>>() {});
+    public List<Account> accountsFromResponse() {
+        return this.clientResponse.getEntity(new GenericType<List<Account>>() {});
     }
 }

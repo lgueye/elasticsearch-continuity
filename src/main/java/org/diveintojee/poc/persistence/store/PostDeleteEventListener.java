@@ -3,12 +3,11 @@
  */
 package org.diveintojee.poc.persistence.store;
 
+import org.diveintojee.poc.domain.AbstractEntity;
+import org.diveintojee.poc.persistence.search.SearchEngine;
 import org.hibernate.event.spi.PostDeleteEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import fr.midipascher.domain.AbstractEntity;
-import fr.midipascher.persistence.search.SearchEngine;
 
 /**
  * @author louis.gueye@gmail.com

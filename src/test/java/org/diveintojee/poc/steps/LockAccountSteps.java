@@ -3,16 +3,14 @@
  */
 package org.diveintojee.poc.steps;
 
+import org.diveintojee.poc.domain.ResponseError;
+import org.diveintojee.poc.web.AccountsResource;
 import org.diveintojee.poc.web.WebConstants;
 import org.jbehave.core.annotations.Named;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 
 import javax.ws.rs.core.UriBuilder;
-
-import fr.midipascher.domain.ResponseError;
-import fr.midipascher.web.WebConstants;
-import fr.midipascher.web.resources.AccountsResource;
 
 /**
  * @author louis.gueye@gmail.com

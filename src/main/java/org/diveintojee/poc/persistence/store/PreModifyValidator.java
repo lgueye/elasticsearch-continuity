@@ -6,6 +6,8 @@ package org.diveintojee.poc.persistence.store;
 import com.google.common.base.Preconditions;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.diveintojee.poc.domain.AbstractEntity;
+import org.diveintojee.poc.domain.validation.ValidationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,9 +17,6 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
-
-import fr.midipascher.domain.AbstractEntity;
-import fr.midipascher.domain.validation.ValidationContext;
 
 /**
  * @author louis.gueye@gmail.com

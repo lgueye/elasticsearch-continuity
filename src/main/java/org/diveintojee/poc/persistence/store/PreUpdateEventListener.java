@@ -3,15 +3,14 @@
  */
 package org.diveintojee.poc.persistence.store;
 
+import com.google.code.geocoder.Geocoder;
+import org.diveintojee.poc.domain.AbstractEntity;
+import org.diveintojee.poc.domain.Account;
+import org.diveintojee.poc.domain.validation.ValidationContext;
 import org.hibernate.event.spi.PreUpdateEvent;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import fr.midipascher.domain.AbstractEntity;
-import fr.midipascher.domain.EventAware;
-import fr.midipascher.domain.LocationAware;
-import fr.midipascher.domain.validation.ValidationContext;
 
 /**
  * @author louis.gueye@gmail.com
@@ -25,9 +24,6 @@ public class PreUpdateEventListener implements
 
     public static final String BEAN_ID = "preUpdateEventListener";
 
-    @Autowired
-    private Geocoder geocoder;
-
     /**
      *
      */
@@ -40,11 +36,8 @@ public class PreUpdateEventListener implements
     public boolean onPreUpdate(PreUpdateEvent event) {
         final Object eventEntity = event.getEntity();
         preModifyValidator.validate((AbstractEntity) eventEntity, ValidationContext.UPDATE);
-        if (eventEntity instanceof EventAware) {
-          ((EventAware)eventEntity).setUpdated(new DateTime());
-        }
-        if (eventEntity instanceof LocationAware) {
-            geocoder.latLong(((LocationAware) eventEntity).getAddress());
+        if (eventEntity instanceof Account) {
+          ((Account)eventEntity).setUpdated(new DateTime());
         }
         return false;
     }

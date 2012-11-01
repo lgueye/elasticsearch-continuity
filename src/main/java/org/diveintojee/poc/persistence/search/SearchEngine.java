@@ -1,9 +1,9 @@
 package org.diveintojee.poc.persistence.search;
 
-import java.util.List;
+import org.diveintojee.poc.domain.AbstractEntity;
+import org.diveintojee.poc.domain.Account;
 
-import fr.midipascher.domain.AbstractEntity;
-import fr.midipascher.domain.Restaurant;
+import java.util.List;
 
 /**
  * @author louis.gueye@gmail.com
@@ -14,7 +14,7 @@ public interface SearchEngine {
 
     String RESTAURANT_TYPE_NAME = SearchTypes.restaurant.toString();
 
-    List<Restaurant> findRestaurantsByCriteria(Restaurant criteria);
+    List<Account> findAccountsByCriteria(Account criteria);
 
     void index(AbstractEntity entity);
 

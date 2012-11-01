@@ -4,6 +4,7 @@
 package org.diveintojee.poc.web;
 
 import org.diveintojee.poc.domain.Account;
+import org.diveintojee.poc.domain.business.Facade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,9 +23,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import fr.midipascher.domain.Account;
-import fr.midipascher.domain.business.Facade;
-
 /**
  * @author louis.gueye@gmail.com
  */
@@ -38,9 +36,6 @@ public class AccountsResource {
     @Context
     private UriInfo uriInfo;
 
-    // private static final Logger LOGGER =
-    // LoggerFactory.getLogger(AccountsResource.class);
-
     public static final String COLLECTION_RESOURCE_PATH = "/accounts";
 
     public static final String SINGLE_RESOURCE_PATH = "/{accountId}";
@@ -53,50 +48,6 @@ public class AccountsResource {
                 .build(String.valueOf(id));
 
         return Response.created(uri).build();
-
-    }
-
-    @DELETE
-    @Path(SINGLE_RESOURCE_PATH)
-    public Response deleteAccount(@PathParam(value = "accountId") final Long id) throws Throwable {
-
-        facade.deleteAccount(id);
-
-        return Response.ok().build();
-
-    }
-
-    @POST
-    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    @Path(SINGLE_RESOURCE_PATH + "/lock")
-    public Response lockAccount(@PathParam(value = "accountId") final Long id) throws Throwable {
-
-        facade.lockAccount(id);
-
-        return Response.ok().build();
-
-    }
-
-    @GET
-    @Path(SINGLE_RESOURCE_PATH)
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response readAccount(@PathParam(value = "accountId") final Long id) throws Throwable {
-
-        final Account account = facade.readAccount(id, true);
-
-        return Response.ok(account).build();
-
-    }
-
-    @PUT
-    @Path(SINGLE_RESOURCE_PATH)
-    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response updateAccount(@PathParam(value = "accountId") final Long id, final Account account)
-            throws Throwable {
-
-        facade.updateAccount(id, account);
-
-        return Response.ok().build();
 
     }
 

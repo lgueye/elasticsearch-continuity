@@ -9,6 +9,6 @@ target/
 *.ipr
 *.iws
 projectFilesBackup
-
+.idea
 
 
