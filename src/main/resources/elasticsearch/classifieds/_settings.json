@@ -1,0 +1,7 @@
+{
+    "index.analysis.analyzer.default.type":"custom",
+    "index.analysis.analyzer.default.tokenizer":"standard",
+    "index.analysis.analyzer.default.filter.0":"standard",
+    "index.analysis.analyzer.default.filter.1":"lowercase",
+    "index.analysis.analyzer.default.filter.2":"asciifolding"
+}

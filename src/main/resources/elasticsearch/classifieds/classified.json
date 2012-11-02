@@ -1,0 +1,23 @@
+{
+    "classified":{
+        "dynamic":"false",
+        "properties":{
+            "created":{
+                "type": "date",
+                "format": "date_optional_time"
+            },
+            "updated":{
+                "type": "date",
+                "format": "date_optional_time"
+            },
+            "title":{
+                "type":"string",
+                "index":"analyzed"
+            },
+            "description":{
+                "type":"string",
+                "index":"analyzed"
+            }
+        }
+    }
+}

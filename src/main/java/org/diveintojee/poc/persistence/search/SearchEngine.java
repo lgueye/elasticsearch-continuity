@@ -1,7 +1,7 @@
 package org.diveintojee.poc.persistence.search;
 
 import org.diveintojee.poc.domain.AbstractEntity;
-import org.diveintojee.poc.domain.Account;
+import org.diveintojee.poc.domain.Classified;
 
 import java.util.List;
 
@@ -10,11 +10,11 @@ import java.util.List;
  */
 public interface SearchEngine {
 
-    String INDEX_NAME = SearchIndices.midipascher.toString();
+    String INDEX_NAME = SearchIndices.classifieds.toString();
 
-    String RESTAURANT_TYPE_NAME = SearchTypes.restaurant.toString();
+    String CLASSIFIED_TYPE_NAME = SearchTypes.classified.toString();
 
-    List<Account> findAccountsByCriteria(Account criteria);
+    List<Classified> findClassifiedsByCriteria(Classified criteria);
 
     void index(AbstractEntity entity);
 

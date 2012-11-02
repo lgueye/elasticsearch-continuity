@@ -3,9 +3,11 @@
  */
 package org.diveintojee.poc.business.impl;
 
-import org.diveintojee.poc.domain.Account;
+import org.diveintojee.poc.domain.Classified;
 import org.diveintojee.poc.domain.business.Facade;
 import org.diveintojee.poc.domain.business.Validator;
+import org.diveintojee.poc.domain.exceptions.BusinessException;
+import org.diveintojee.poc.domain.validation.ValidationContext;
 import org.diveintojee.poc.persistence.search.SearchEngine;
 import org.diveintojee.poc.persistence.store.BaseDao;
 import org.slf4j.Logger;
@@ -14,6 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @author louis.gueye@gmail.com
@@ -27,9 +33,9 @@ public class FacadeImpl implements Facade {
     @Autowired
     private BaseDao baseDao;
 
-    @Autowired
-    @Qualifier("messageSources")
-    private MessageSource messageSource;
+//    @Autowired
+//    @Qualifier("messageSources")
+//    private MessageSource messageSource;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FacadeImpl.class);
 
@@ -38,7 +44,65 @@ public class FacadeImpl implements Facade {
 
 
     @Override
-    public Long createAccount(Account account) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    @Transactional(propagation = Propagation.REQUIRED)
+    public Long createClassified(Classified classified) {
+        if (classified == null) {
+          String message = "create classified - classified is required";
+          LOGGER.error(message);
+          throw new IllegalArgumentException(message);
+        }
+        this.validator.validate(classified, ValidationContext.CREATE);
+        this.baseDao.persist(classified);
+        return classified.getId();
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void updateClassified(Long id, Classified classified) {
+        Classified persisted = readClassified(id);
+        persisted.setTitle(classified.getTitle());
+        persisted.setDescription(classified.getDescription());
+        this.validator.validate(persisted, ValidationContext.UPDATE);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Classified readClassified(Long id) {
+        if (id == null) {
+          String message = "read classified - classified id is required";
+          LOGGER.error(message);
+          throw new IllegalArgumentException(message);
+        }
+        Classified classified = baseDao.get(Classified.class, id);
+        if (classified == null) {
+          String message = "read classified - Classified [id = {0}] was not found";
+          LOGGER.error(message);
+          throw new BusinessException("classified.not.found", null, message);
+        }
+        return classified;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void deleteClassified(Long id) {
+        if (id == null) {
+          String message = "read classified - classified id is required";
+          LOGGER.error(message);
+          throw new IllegalArgumentException(message);
+        }
+        Classified classified = baseDao.get(Classified.class, id);
+        if (classified != null) {
+          baseDao.delete(Classified.class, id);
+        }
+    }
+
+    @Override
+    public List<Classified> findClassifiedsByCriteria(Classified criteria) {
+        if (criteria == null) {
+          String message = "search classified - classified is required";
+          LOGGER.error(message);
+          throw new IllegalArgumentException(message);
+        }
+        return searchEngine.findClassifiedsByCriteria(criteria);
     }
 }

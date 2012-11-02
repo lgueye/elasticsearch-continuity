@@ -4,7 +4,8 @@
 package org.diveintojee.poc.persistence.store;
 
 import org.diveintojee.poc.domain.AbstractEntity;
-import org.diveintojee.poc.domain.Account;
+import org.diveintojee.poc.domain.Classified;
+import org.diveintojee.poc.domain.validation.PreModifyValidator;
 import org.diveintojee.poc.domain.validation.ValidationContext;
 import org.hibernate.event.spi.PreInsertEvent;
 import org.joda.time.DateTime;
@@ -36,9 +37,9 @@ public class PreInsertEventListener implements
     @Override
     public boolean onPreInsert(PreInsertEvent event) {
         final Object eventEntity = event.getEntity();
-        preModifyValidator.validate((AbstractEntity) eventEntity, ValidationContext.UPDATE);
-        if (eventEntity instanceof Account) {
-            ((Account)eventEntity).setCreated(new DateTime());
+        preModifyValidator.validate((AbstractEntity) eventEntity, ValidationContext.CREATE);
+        if (eventEntity instanceof Classified) {
+            ((Classified)eventEntity).setCreated(new DateTime());
         }
         return false;
     }

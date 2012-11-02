@@ -3,9 +3,9 @@
  */
 package org.diveintojee.poc.persistence.store;
 
-import com.google.code.geocoder.Geocoder;
 import org.diveintojee.poc.domain.AbstractEntity;
-import org.diveintojee.poc.domain.Account;
+import org.diveintojee.poc.domain.Classified;
+import org.diveintojee.poc.domain.validation.PreModifyValidator;
 import org.diveintojee.poc.domain.validation.ValidationContext;
 import org.hibernate.event.spi.PreUpdateEvent;
 import org.joda.time.DateTime;
@@ -36,8 +36,8 @@ public class PreUpdateEventListener implements
     public boolean onPreUpdate(PreUpdateEvent event) {
         final Object eventEntity = event.getEntity();
         preModifyValidator.validate((AbstractEntity) eventEntity, ValidationContext.UPDATE);
-        if (eventEntity instanceof Account) {
-          ((Account)eventEntity).setUpdated(new DateTime());
+        if (eventEntity instanceof Classified) {
+          ((Classified)eventEntity).setUpdated(new DateTime());
         }
         return false;
     }

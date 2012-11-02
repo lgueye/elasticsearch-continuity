@@ -9,6 +9,6 @@ package org.diveintojee.poc.persistence.search;
  */
 public enum SearchIndices {
 
-    midipascher;
+    classifieds;
 
 }

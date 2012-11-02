@@ -13,7 +13,7 @@ import com.sun.jersey.client.apache4.ApacheHttpClient4;
 import com.sun.jersey.client.apache4.config.DefaultApacheHttpClient4Config;
 
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
-import org.diveintojee.poc.domain.Account;
+import org.diveintojee.poc.domain.Classified;
 import org.diveintojee.poc.domain.ResponseError;
 import org.junit.Assert;
 
@@ -170,7 +170,7 @@ public class Exchange {
         inactivateEntity();
     }
 
-    public List<Account> accountsFromResponse() {
-        return this.clientResponse.getEntity(new GenericType<List<Account>>() {});
+    public List<Classified> accountsFromResponse() {
+        return this.clientResponse.getEntity(new GenericType<List<Classified>>() {});
     }
 }

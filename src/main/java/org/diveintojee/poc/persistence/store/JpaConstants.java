@@ -8,6 +8,6 @@ package org.diveintojee.poc.persistence.store;
  */
 public class JpaConstants {
 
-    public static final String PERSISTANCE_UNIT_NAME = "midipascher-persistence-unit";
+    public static final String PERSISTANCE_UNIT_NAME = "elasticsearch-continuity-persistence-unit";
 
 }
