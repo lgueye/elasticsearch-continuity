@@ -5,7 +5,7 @@ package org.diveintojee.poc.persistence.store;
 
 import org.diveintojee.poc.domain.AbstractEntity;
 import org.diveintojee.poc.domain.Classified;
-import org.diveintojee.poc.domain.validation.PreModifyValidator;
+import org.diveintojee.poc.domain.business.Validator;
 import org.diveintojee.poc.domain.validation.ValidationContext;
 import org.hibernate.event.spi.PreUpdateEvent;
 import org.joda.time.DateTime;
@@ -20,7 +20,7 @@ public class PreUpdateEventListener implements
         org.hibernate.event.spi.PreUpdateEventListener {
 
     @Autowired
-    private PreModifyValidator preModifyValidator;
+    private Validator validator;
 
     public static final String BEAN_ID = "preUpdateEventListener";
 
@@ -35,7 +35,7 @@ public class PreUpdateEventListener implements
     @Override
     public boolean onPreUpdate(PreUpdateEvent event) {
         final Object eventEntity = event.getEntity();
-        preModifyValidator.validate((AbstractEntity) eventEntity, ValidationContext.UPDATE);
+        validator.validate((AbstractEntity) eventEntity, ValidationContext.UPDATE);
         if (eventEntity instanceof Classified) {
           ((Classified)eventEntity).setUpdated(new DateTime());
         }

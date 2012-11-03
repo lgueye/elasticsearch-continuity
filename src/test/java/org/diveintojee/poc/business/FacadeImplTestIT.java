@@ -196,16 +196,16 @@ public class FacadeImplTestIT {
         int expectedHitsCount;
         List<Classified> actualResponse;
         Classified classified;
-        String name;
+        String title;
         String query;
         Classified criteria;
 
         // Given I index that data
         expectedHitsCount = 1;
-        name = "Gouts et saveurs";
+        title = "Gouts et saveurs";
         classified = TestFixtures.validClassified();
-        classified.setTitle(name);
-        facade.createClassified(TestFixtures.validClassified());
+        classified.setTitle(title);
+        facade.createClassified(classified);
 
         // When I search
         query = "gouts";
@@ -249,7 +249,7 @@ public class FacadeImplTestIT {
         description = "classified awesome description";
         classified = TestFixtures.validClassified();
         classified.setDescription(description);
-        Long accountId = facade.createClassified(TestFixtures.validClassified());
+        facade.createClassified(classified);
 
         // When I search
         expectedHitsCount = 1;

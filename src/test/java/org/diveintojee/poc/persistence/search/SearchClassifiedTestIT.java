@@ -51,17 +51,17 @@ public class SearchClassifiedTestIT {
     @Qualifier(JsonByteArrayToClassifiedConverter.BEAN_ID)
     private JsonByteArrayToClassifiedConverter jsonByteArrayToClassifiedConverter;
 
-    @Value("classpath:/elasticsearch/midipascher/_settings.json")
+    private static final String INDEX_NAME = SearchIndices.classifieds.toString();
+    private static final String TYPE_NAME = SearchTypes.classified.toString();
+
+    @Value("classpath:/elasticsearch/classifieds/_settings.json")
     private Resource indexSettings;
 
-    @Value("classpath:/elasticsearch/midipascher/classified.json")
+    @Value("classpath:/elasticsearch/classifieds/classified.json")
     private Resource classifiedsMapping;
 
     @Autowired
     private Client underTest;
-
-    private static final String INDEX_NAME = SearchIndices.classifieds.toString();
-    private static final String TYPE_NAME = SearchTypes.classified.toString();
 
     @Before
     public void configureSearchEngine() throws Exception {
@@ -101,10 +101,10 @@ public class SearchClassifiedTestIT {
         classified.setDescription(description);
         indexClassified(id, classified);
         indexClassified(1L, TestFixtures.validClassified());
-        expectedHitsCount = 1;
 
         // When I search
         query = "gouts";
+        expectedHitsCount = 1;
         actualResponse = findByDescription(query);
         // Then I should get 1 hit
         assertHitsCount(expectedHitsCount, actualResponse);
@@ -113,6 +113,7 @@ public class SearchClassifiedTestIT {
 
         // When I search
         query = "goûts";
+        expectedHitsCount = 1;
         actualResponse = findByDescription(query);
         // Then I should get 1 hit
         assertHitsCount(expectedHitsCount, actualResponse);
@@ -121,6 +122,7 @@ public class SearchClassifiedTestIT {
 
         // When I search
         query = "saveurs";
+        expectedHitsCount = 1;
         actualResponse = findByDescription(query);
         // Then I should get 1 hit
         assertHitsCount(expectedHitsCount, actualResponse);
@@ -143,7 +145,6 @@ public class SearchClassifiedTestIT {
         classified.setTitle(title);
         indexClassified(id, classified);
         indexClassified(1L, TestFixtures.validClassified());
-        expectedHitsCount = 1;
 
         // When I search
         query = "gouts";
@@ -174,12 +175,12 @@ public class SearchClassifiedTestIT {
     }
 
     private SearchResponse findByTitle(final String query) {
-        QueryStringQueryBuilder queryString = QueryBuilders.queryString(query).field("name");
+        QueryStringQueryBuilder queryString = QueryBuilders.queryString(query).field(ClassifiedSearchFieldsRegistry.TITLE);
         return this.underTest.prepareSearch(INDEX_NAME).setTypes(TYPE_NAME).setQuery(queryString).execute().actionGet();
     }
 
     private SearchResponse findByDescription(final String query) {
-        QueryStringQueryBuilder queryString = QueryBuilders.queryString(query).field("description");
+        QueryStringQueryBuilder queryString = QueryBuilders.queryString(query).field(ClassifiedSearchFieldsRegistry.DESCRIPTION);
         return this.underTest.prepareSearch(INDEX_NAME).setTypes(TYPE_NAME).setQuery(queryString).execute().actionGet();
     }
 

@@ -36,8 +36,8 @@ public class MessageSourceTestIT {
     @Test
     public final void messageSourceShouldConsiderEncoding() {
 
-        assertEquals("informations de connexion erronées",
-                this.underTest.getMessage(String.valueOf(HttpServletResponse.SC_UNAUTHORIZED), null, Locale.FRENCH));
+        assertEquals("L'identifiant est requis",
+                this.underTest.getMessage("classified.id.required", null, Locale.FRENCH));
 
     }
 

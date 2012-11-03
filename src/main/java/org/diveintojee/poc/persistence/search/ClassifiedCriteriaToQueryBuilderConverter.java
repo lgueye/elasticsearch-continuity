@@ -43,8 +43,8 @@ public class ClassifiedCriteriaToQueryBuilderConverter implements Converter<Clas
 
         ImmutableMap.Builder<String, Object> builder = ImmutableMap.builder();
 
-        String name = source.getTitle();
-        if (!Strings.isNullOrEmpty(name)) builder.put(ClassifiedSearchFieldsRegistry.TITLE, name);
+        String title = source.getTitle();
+        if (!Strings.isNullOrEmpty(title)) builder.put(ClassifiedSearchFieldsRegistry.TITLE, title);
 
         String description = source.getDescription();
         if (!Strings.isNullOrEmpty(description)) builder.put(ClassifiedSearchFieldsRegistry.DESCRIPTION, description);
@@ -64,8 +64,6 @@ public class ClassifiedCriteriaToQueryBuilderConverter implements Converter<Clas
     }
 
     protected boolean noCriteria(Map<String, Object> criteria) {
-
         return criteria == null || criteria.size() == 0;
-
     }
 }
