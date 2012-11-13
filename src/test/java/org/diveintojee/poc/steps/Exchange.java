@@ -1,7 +1,6 @@
 package org.diveintojee.poc.steps;
 
 import com.google.common.base.Strings;
-
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
@@ -11,10 +10,8 @@ import com.sun.jersey.api.client.filter.LoggingFilter;
 import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.client.apache4.ApacheHttpClient4;
 import com.sun.jersey.client.apache4.config.DefaultApacheHttpClient4Config;
-
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.diveintojee.poc.domain.Classified;
-import org.diveintojee.poc.domain.ResponseError;
 import org.junit.Assert;
 
 import java.net.URI;
@@ -50,24 +47,6 @@ public class Exchange {
      */
     public void assertExpectedStatus(int expected) {
         Assert.assertEquals(expected, this.clientResponse.getStatus());
-    }
-
-    /**
-     * @param clazz
-     */
-    public void assertNewResource(Class<?> clazz) {
-        this.clientResponse = readLocation();
-        Assert.assertNotNull(this.clientResponse.getEntity(clazz));
-
-    }
-
-    /**
-     * @return
-     */
-    public ClientResponse readLocation() {
-        return this.jerseyClient.resource(this.clientResponse.getLocation()).accept(this.request.getRequestedType())
-                .acceptLanguage(this.request.getRequestedLanguage()).get(ClientResponse.class);
-
     }
 
     /**
@@ -122,55 +101,14 @@ public class Exchange {
                 .post(ClientResponse.class, this.request.getBody());
     }
 
-    /**
-     */
-    public void assertExpectedMessage(Class<?> clazz, String expected) {
-
-        Object message = this.clientResponse.getEntity(clazz);
-
-        String actual = null;
-
-        if (message instanceof String) actual = (String) message;
-        else
-            actual = ((ResponseError) message).getMessage();
-
-        Assert.assertEquals(expected, actual);
-    }
-
-    public void readURI() {
-        final URI uri = newURI(this.request.getUri());
-        this.clientResponse = this.jerseyClient.resource(uri).accept(this.request.getRequestedType())
-                .acceptLanguage(this.request.getRequestedLanguage()).get(ClientResponse.class);
-    }
-
-    public void updateEntity() {
-        final URI uri = newURI(this.request.getUri());
-        this.clientResponse = this.jerseyClient.resource(uri).type(this.request.getType())
-                .accept(this.request.getRequestedType()).acceptLanguage(this.request.getRequestedLanguage())
-                .put(ClientResponse.class, this.request.getBody());
-
-    }
-
-    public void inactivateEntity() {
-        final URI uri = newURI(this.request.getUri());
-        this.clientResponse = this.jerseyClient.resource(uri).accept(this.request.getRequestedType())
-                .acceptLanguage(this.request.getRequestedLanguage()).post(ClientResponse.class);
-    }
-
     public void deleteEntity() {
         final URI uri = newURI(this.request.getUri());
         this.clientResponse = this.jerseyClient.resource(uri).accept(this.request.getRequestedType())
                 .acceptLanguage(this.request.getRequestedLanguage()).delete(ClientResponse.class);
     }
 
-    /**
-     *
-     */
-    public void lockEntity() {
-        inactivateEntity();
-    }
-
-    public List<Classified> accountsFromResponse() {
+    public List<Classified> classifiedsFromResponse() {
         return this.clientResponse.getEntity(new GenericType<List<Classified>>() {});
     }
+
 }
