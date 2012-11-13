@@ -60,6 +60,22 @@ public class ContinuitySteps extends BackendBaseSteps {
         }
     }
 
+    @When("I create a valid classified: $table")
+    public void createClassified(ExamplesTable table) throws IOException {
+        Exchange exchange = new Exchange();
+        for (int i = 0; i < table.getRowCount(); i++) {
+            Map<String, String> row = table.getRow(i);
+            Classified classified = fromRow(row);
+            exchange.getRequest().setBody(classified);
+            exchange.setCredentials("louis@rmgr.com", "secret");
+            exchange.getRequest().setUri(CREATE_URI);
+            exchange.createEntity();
+            final URI uri = exchange.getLocation();
+            createdClassifiedUris.add(uri);
+
+        }
+    }
+
     private Classified fromRow(Map<String, String> row) throws IOException {
         Classified classified = new Classified();
         final String title = row.get(ClassifiedSearchFieldsRegistry.TITLE);
@@ -83,6 +99,11 @@ public class ContinuitySteps extends BackendBaseSteps {
 
     }
 
+    @When("the system stops consuming messages")
+    public void stopConsuming() {
+      throw new UnsupportedOperationException("Not yet implemented");
+    }
+
     @Then("I should get the following classifieds: $table")
     public void theValuesReturnedAre(ExamplesTable table) {
         List<Classified> classifieds = this.exchange.classifiedsFromResponse();
@@ -97,6 +118,23 @@ public class ContinuitySteps extends BackendBaseSteps {
             outcomes.verify();
         }
 
+    }
+    @Then("I should get no results")
+    public void checkNoResults() {
+        List<Classified> classifieds = this.exchange.classifiedsFromResponse();
+        assertEquals(0, classifieds.size());
+    }
+
+    @When("I trigger a reindex operation")
+    @Pending
+    public void triggerAReindexOperation() {
+      throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    @When("I start consuming messages")
+    @Pending
+    public void startConsuming() {
+      throw new UnsupportedOperationException("Not yet implemented");
     }
 
     private Map<String, String> actualRow(Classified classified) {

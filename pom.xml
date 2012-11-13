@@ -1035,14 +1035,16 @@
                         <includes>
                             <include>**/*.properties</include>
                             <include>**/log4j.xml</include>
-                            <include>**/*.json</include>
-                            <include>**/*.yml</include>
                         </includes>
                     </resource>
                     <!-- Copy .xml files to output and do not filter them -->
                     <resource>
                         <directory>src/main/resources</directory>
                         <filtering>false</filtering>
+                        <excludes>
+                            <exclude>**/*.properties</exclude>
+                            <exclude>**/log4j.xml</exclude>
+                        </excludes>
                     </resource>
                 </resources>
                 <testResources>
@@ -1053,14 +1055,16 @@
                         <includes>
                             <include>**/*.properties</include>
                             <include>**/log4j.xml</include>
-                            <include>**/*.json</include>
-                            <include>**/*.yml</include>
                         </includes>
                     </testResource>
                     <!-- Copy .xml files to output and do not filter them -->
                     <testResource>
                         <directory>src/test/resources</directory>
                         <filtering>false</filtering>
+                        <excludes>
+                            <exclude>**/*.properties</exclude>
+                            <exclude>**/log4j.xml</exclude>
+                        </excludes>
                     </testResource>
                 </testResources>
 
@@ -1228,6 +1232,7 @@
                             <include>**/log4j.xml</include>
                             <include>**/*.json</include>
                             <include>**/*.yml</include>
+                            <include>**/*.story</include>
                         </includes>
                     </testResource>
                     <!-- Copy .xml files to output and do not filter them -->
