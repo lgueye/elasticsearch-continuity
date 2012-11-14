@@ -8,9 +8,7 @@ import org.diveintojee.poc.domain.business.Facade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -42,6 +40,27 @@ public class ClassifiedsResource {
                 .build(String.valueOf(id));
 
         return Response.created(uri).build();
+
+    }
+
+    @DELETE
+    @Path(SINGLE_RESOURCE_PATH)
+    public Response delete(@PathParam(value = "classifiedId") final Long classifiedId) throws Throwable {
+
+        facade.deleteClassified(classifiedId);
+
+        return Response.ok().build();
+
+    }
+
+    @GET
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Path(SINGLE_RESOURCE_PATH)
+    public Response get(@PathParam(value = "classifiedId") final Long classifiedId) throws Throwable {
+
+        final Classified classified = facade.readClassified(classifiedId);
+
+        return Response.ok(classified).build();
 
     }
 

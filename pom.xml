@@ -87,7 +87,7 @@
         <jbehave.version>3.7.3</jbehave.version>
         <jbehave-site-resources.version>3.1.1</jbehave-site-resources.version>
         <commons-dbcp.version>1.4</commons-dbcp.version>
-        <symmetric-csv.version>3.1.7</symmetric-csv.version>
+        <!--<symmetric-csv.version>3.1.7</symmetric-csv.version>-->
 
         <!-- BUILD -->
         <webapp.module.context>elasticsearch-continuity</webapp.module.context>
@@ -291,6 +291,13 @@
             <version>${elasticsearch.version}</version>
         </dependency>
 
+        <!-- INTEGRATION -->
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-core</artifactId>
+            <version>5.6.0</version>
+        </dependency>
+
         <!-- BUSINESS -->
         <dependency>
             <groupId>javax.validation</groupId>
@@ -335,6 +342,11 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-oxm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jms</artifactId>
             <version>${spring.version}</version>
         </dependency>
         <dependency>
@@ -629,11 +641,11 @@
             <type>zip</type>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.jumpmind.symmetric</groupId>
-            <artifactId>symmetric-csv</artifactId>
-            <version>${symmetric-csv.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.jumpmind.symmetric</groupId>-->
+            <!--<artifactId>symmetric-csv</artifactId>-->
+            <!--<version>${symmetric-csv.version}</version>-->
+        <!--</dependency>-->
 
         <!-- SECURITY -->
         <dependency>
