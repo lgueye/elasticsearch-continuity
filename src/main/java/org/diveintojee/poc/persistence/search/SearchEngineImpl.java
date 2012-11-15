@@ -57,4 +57,9 @@ public class SearchEngineImpl implements SearchEngine {
             elasticsearch.prepareDelete(INDEX_NAME, CLASSIFIED_TYPE_NAME, entity.getId().toString()).setRefresh(true).execute().actionGet();
         }
     }
+
+    @Override
+    public void reindexClassifieds() {
+              
+    }
 }

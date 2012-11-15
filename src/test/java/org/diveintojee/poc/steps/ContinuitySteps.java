@@ -131,7 +131,7 @@ public class ContinuitySteps extends BackendBaseSteps {
       throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    @When("I start consuming messages")
+    @When("the system starts consuming messages")
     @Pending
     public void startConsuming() {
       throw new UnsupportedOperationException("Not yet implemented");

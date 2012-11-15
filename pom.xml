@@ -13,14 +13,6 @@
         <maven>2.2.1</maven>
     </prerequisites>
 
-    <!--<repositories>-->
-    <!--<repository>-->
-    <!--<id>sonatype-releases</id>-->
-    <!--<name>Sonatype Releases Repository</name>-->
-    <!--<url>http://oss.sonatype.org/content/repositories/releases/</url>-->
-    <!--</repository>-->
-    <!--</repositories>-->
-
     <developers>
         <developer>
             <email>louis.gueye@gmail.com</email>

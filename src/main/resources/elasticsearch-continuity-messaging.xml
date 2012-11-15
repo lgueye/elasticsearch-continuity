@@ -29,7 +29,7 @@
     </bean>
 
     <jms:listener-container concurrency="10">
-        <jms:listener destination="write-classifieds" ref="queueListener"/>
+        <jms:listener destination="write-classifieds" ref="queueConsumer"/>
     </jms:listener-container>
 
 </beans>

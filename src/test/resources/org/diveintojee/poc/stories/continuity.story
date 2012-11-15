@@ -36,7 +36,7 @@ And I create a valid classified:
 When I search for classifieds which "title" matches "whatever"
 Then I should get no results
 When I trigger a reindex operation
-And I start consuming messages
+And the system starts consuming messages
 And I search for classifieds which "title" matches "whatever"
 Then I should get the following classifieds:
 | title           | description          |

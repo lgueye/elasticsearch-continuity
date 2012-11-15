@@ -19,4 +19,6 @@ public interface SearchEngine {
     void index(AbstractEntity entity);
 
     void removeFromIndex(AbstractEntity entity);
+
+    void reindexClassifieds();
 }

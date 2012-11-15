@@ -2,6 +2,7 @@ package org.diveintojee.poc.persistence.search.factory;
 
 import com.google.common.collect.Lists;
 
+import org.diveintojee.poc.persistence.search.SearchIndices;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
@@ -37,6 +38,8 @@ public class DropCreateIndicesCommand {
             dropIndex(client, indexConfiguration);
             createIndex(client, indexConfiguration);
             putMappings(client, indexConfiguration);
+            client.admin().indices().prepareAliases().addAlias(indexConfiguration.getName(),
+                                                               SearchIndices.classifieds.name());
         }
     }
 
