@@ -730,7 +730,6 @@
                     <version>${maven-resources-plugin.version}</version>
                     <configuration>
                         <encoding>${project.build.sourceEncoding}</encoding>
-                        <outputDirectory>${project.build.outputDirectory}</outputDirectory>
                     </configuration>
                 </plugin>
                 <plugin>
