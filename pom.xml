@@ -1150,6 +1150,7 @@
                                     <goal>operation</goal>
                                 </goals>
                                 <configuration>
+                                    <url>${javax.persistence.jdbc.url}</url>
                                     <format>flat</format>
                                     <type>DELETE_ALL</type>
                                     <src>src/test/resources/dbunit/persistence-test-data.xml</src>
@@ -1162,6 +1163,7 @@
                                     <goal>operation</goal>
                                 </goals>
                                 <configuration>
+                                    <url>${javax.persistence.jdbc.url}</url>
                                     <format>flat</format>
                                     <type>CLEAN_INSERT</type>
                                     <src>src/test/resources/dbunit/acceptance-test-data.xml</src>
@@ -1324,6 +1326,7 @@
                                     <goal>operation</goal>
                                 </goals>
                                 <configuration>
+                                    <url>${javax.persistence.jdbc.url}</url>
                                     <format>flat</format>
                                     <type>DELETE_ALL</type>
                                     <src>src/test/resources/dbunit/persistence-test-data.xml</src>
@@ -1336,6 +1339,7 @@
                                     <goal>operation</goal>
                                 </goals>
                                 <configuration>
+                                    <url>${javax.persistence.jdbc.url}</url>
                                     <format>flat</format>
                                     <type>CLEAN_INSERT</type>
                                     <src>src/test/resources/dbunit/acceptance-test-data.xml</src>
