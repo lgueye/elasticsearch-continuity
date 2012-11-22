@@ -106,7 +106,7 @@ public class FacadeImpl implements Facade {
 
     @Override
     public void fullReIndexClassifieds() {
-        searchEngine.reindexClassifieds();
+        searchEngine.reIndexClassifieds();
     }
 
     @Override

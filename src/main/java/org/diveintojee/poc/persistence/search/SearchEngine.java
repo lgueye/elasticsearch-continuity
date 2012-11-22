@@ -20,5 +20,5 @@ public interface SearchEngine {
 
     void removeFromIndex(AbstractEntity entity);
 
-    void reindexClassifieds();
+    void reIndexClassifieds();
 }
