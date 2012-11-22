@@ -8,6 +8,7 @@
 	http://www.springframework.org/schema/tx  http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
 
     <import resource="classpath:elasticsearch-continuity-validation.xml"/>
+    <import resource="classpath:elasticsearch-continuity-messaging.xml"/>
 
     <context:property-placeholder location="classpath:persistence.properties"/>
 

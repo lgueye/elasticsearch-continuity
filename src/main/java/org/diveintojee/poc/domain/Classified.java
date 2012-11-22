@@ -3,6 +3,10 @@
  */
 package org.diveintojee.poc.domain;
 
+import com.google.common.base.Objects;
+
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.ext.JodaSerializers.DateTimeSerializer;
 import org.diveintojee.poc.domain.validation.Create;
@@ -154,4 +158,14 @@ public class Classified extends AbstractEntity {
         this.updated = updated;
     }
 
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this).
+            add("id", id).
+            add("title", title).
+            add("description", description).
+            add("created", created).
+            add("updated", updated).
+            toString();
+    }
 }

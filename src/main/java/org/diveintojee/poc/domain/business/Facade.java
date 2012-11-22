@@ -25,10 +25,10 @@ public interface Facade {
 
     List<Classified> findClassifiedsByCriteria(Classified criteria);
 
-    void reindexClassifieds();
+    void fullReIndexClassifieds();
 
     void startConsumingClassifieds();
 
-    void stopConsumingClassifieds();
+    void stopConsumingClassifiedsWriteCommands();
 
 }

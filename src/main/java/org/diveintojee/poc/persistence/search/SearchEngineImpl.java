@@ -2,6 +2,7 @@ package org.diveintojee.poc.persistence.search;
 
 import org.diveintojee.poc.domain.AbstractEntity;
 import org.diveintojee.poc.domain.Classified;
+import org.diveintojee.poc.persistence.store.BaseDao;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -20,6 +21,9 @@ public class SearchEngineImpl implements SearchEngine {
 
     @Autowired
     private Client elasticsearch;
+
+    @Autowired
+    private BaseDao baseDao;
 
     @Autowired
     private ClassifiedCriteriaToQueryBuilderConverter classifiedCriteriaToQueryBuilderConverter;
@@ -60,6 +64,13 @@ public class SearchEngineImpl implements SearchEngine {
 
     @Override
     public void reindexClassifieds() {
-              
+        List<Classified> classifieds = baseDao.findAll(Classified.class);
+      final
+      boolean
+          acknowledged =
+          elasticsearch.admin().indices().prepareCreate("writeclassifieds").execute().actionGet()
+              .acknowledged();
+      if (!acknowledged) throw new IllegalStateException("Ack expected");
+
     }
 }

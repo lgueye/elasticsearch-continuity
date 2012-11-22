@@ -111,4 +111,10 @@ public class Exchange {
         return this.clientResponse.getEntity(new GenericType<List<Classified>>() {});
     }
 
+    public void stopConsuming() {
+        final URI uri = newURI(this.request.getUri());
+        this.clientResponse = this.jerseyClient.resource(uri).type(this.request.getType())
+                .accept(this.request.getRequestedType()).acceptLanguage(this.request.getRequestedLanguage())
+                .post(ClientResponse.class);
+    }
 }

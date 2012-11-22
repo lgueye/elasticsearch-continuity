@@ -8,7 +8,7 @@ import org.diveintojee.poc.domain.business.Facade;
 import org.diveintojee.poc.domain.business.Validator;
 import org.diveintojee.poc.domain.exceptions.BusinessException;
 import org.diveintojee.poc.domain.validation.ValidationContext;
-import org.diveintojee.poc.integration.QueueConsumer;
+import org.diveintojee.poc.integration.ClassifiedsConsumer;
 import org.diveintojee.poc.persistence.search.SearchEngine;
 import org.diveintojee.poc.persistence.store.BaseDao;
 import org.slf4j.Logger;
@@ -38,7 +38,7 @@ public class FacadeImpl implements Facade {
     private SearchEngine searchEngine;
 
     @Autowired
-    private QueueConsumer queueConsumer;
+    private ClassifiedsConsumer classifiedsConsumer;
 
 
     @Override
@@ -105,17 +105,18 @@ public class FacadeImpl implements Facade {
     }
 
     @Override
-    public void reindexClassifieds() {
+    public void fullReIndexClassifieds() {
         searchEngine.reindexClassifieds();
     }
 
     @Override
     public void startConsumingClassifieds() {
-        queueConsumer.startConsumingClassifieds();
+        classifiedsConsumer.startConsumingClassifieds();
     }
 
     @Override
-    public void stopConsumingClassifieds() {
-        queueConsumer.stopConsumingClassifieds();
+    public void stopConsumingClassifiedsWriteCommands() {
+        classifiedsConsumer.stopConsumingWriteCommands();
     }
+
 }

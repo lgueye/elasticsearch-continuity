@@ -4,6 +4,10 @@
 package org.diveintojee.poc.persistence.store;
 
 import org.diveintojee.poc.domain.AbstractEntity;
+import org.diveintojee.poc.domain.Classified;
+import org.diveintojee.poc.integration.ClassifiedsProducer;
+import org.diveintojee.poc.integration.Operation;
+import org.diveintojee.poc.integration.WriteClassifiedCommand;
 import org.diveintojee.poc.persistence.search.SearchEngine;
 import org.hibernate.event.spi.PostInsertEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +23,7 @@ public class PostInsertEventListener implements
     public static final String BEAN_ID = "postInsertEventListener";
 
     @Autowired
-    private SearchEngine searchEngine;
+    private ClassifiedsProducer classifiedsProducer;
 
     /**
      * @see org.hibernate.event.spi.PostInsertEventListener#onPostInsert(org.hibernate.event.spi.PostInsertEvent)
@@ -27,6 +31,6 @@ public class PostInsertEventListener implements
      */
     @Override
     public void onPostInsert(PostInsertEvent event) {
-        searchEngine.index( (AbstractEntity)event.getEntity());
+        classifiedsProducer.write(new WriteClassifiedCommand((Classified) event.getEntity(), Operation.write));
     }
 }

@@ -4,6 +4,10 @@
 package org.diveintojee.poc.persistence.store;
 
 import org.diveintojee.poc.domain.AbstractEntity;
+import org.diveintojee.poc.domain.Classified;
+import org.diveintojee.poc.integration.ClassifiedsProducer;
+import org.diveintojee.poc.integration.Operation;
+import org.diveintojee.poc.integration.WriteClassifiedCommand;
 import org.diveintojee.poc.persistence.search.SearchEngine;
 import org.hibernate.event.spi.PostDeleteEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +23,7 @@ public class PostDeleteEventListener implements
     public static final String BEAN_ID = "postDeleteEventListener";
 
     @Autowired
-    private SearchEngine searchEngine;
+    private ClassifiedsProducer classifiedsProducer;
 
     /**
      * @see org.hibernate.event.spi.PostDeleteEventListener#onPostDelete(org.hibernate.event.spi.PostDeleteEvent)
@@ -27,6 +31,7 @@ public class PostDeleteEventListener implements
      */
     @Override
     public void onPostDelete(PostDeleteEvent event) {
-        searchEngine.removeFromIndex( (AbstractEntity)event.getEntity());
+        classifiedsProducer.write(
+            new WriteClassifiedCommand((Classified) event.getEntity(), Operation.delete));
     }
 }

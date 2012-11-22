@@ -103,6 +103,7 @@
         <dbunit-maven-plugin.version>1.0-beta-3</dbunit-maven-plugin.version>
         <exec-maven-plugin.version>1.2.1</exec-maven-plugin.version>
 
+        <xbean-spring.version>3.7</xbean-spring.version>
     </properties>
 
     <dependencies>
@@ -281,13 +282,6 @@
             <groupId>org.elasticsearch</groupId>
             <artifactId>elasticsearch</artifactId>
             <version>${elasticsearch.version}</version>
-        </dependency>
-
-        <!-- INTEGRATION -->
-        <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-core</artifactId>
-            <version>5.6.0</version>
         </dependency>
 
         <!-- BUSINESS -->
