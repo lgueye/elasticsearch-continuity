@@ -14,9 +14,8 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Locale;
-
 import javax.validation.ConstraintViolationException;
+import java.util.Locale;
 
 import static org.junit.Assert.fail;
 
@@ -41,8 +40,8 @@ public abstract class BaseValidations {
             fail("Expected " + ConstraintViolationException.class.getName());
         } catch (final ConstraintViolationException constraintViolationException) {
             TestFixtures.assertViolationContainsTemplateAndMessage(constraintViolationException,
-                                                                   expectedMessage,
-                                                                   expectedPath);
+                    expectedMessage,
+                    expectedPath);
         } catch (final Throwable throwable) {
             fail("Expected " + ConstraintViolationException.class.getName() + ", got " + throwable.getClass().getName());
             throwable.printStackTrace();

@@ -4,6 +4,7 @@
 package org.diveintojee.poc.domain.validation;
 
 import com.google.common.collect.Sets;
+import org.diveintojee.poc.domain.AbstractEntity;
 import org.diveintojee.poc.domain.Classified;
 import org.diveintojee.poc.domain.business.Validator;
 import org.junit.Test;
@@ -13,19 +14,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-
-import org.diveintojee.poc.domain.validation.ValidatorImpl;
-import org.diveintojee.poc.domain.AbstractEntity;
-import org.diveintojee.poc.domain.validation.ValidationContext;
-
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.verifyZeroInteractions;
 
 /**
  * @author louis.gueye@gmail.com

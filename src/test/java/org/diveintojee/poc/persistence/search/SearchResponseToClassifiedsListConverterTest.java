@@ -29,7 +29,7 @@ public class SearchResponseToClassifiedsListConverterTest {
     @InjectMocks
     private
     SearchResponseToClassifiedsListConverter
-        underTest = new SearchResponseToClassifiedsListConverter();
+            underTest = new SearchResponseToClassifiedsListConverter();
 
     @Test
     public void convertShouldSucceed() throws Exception {

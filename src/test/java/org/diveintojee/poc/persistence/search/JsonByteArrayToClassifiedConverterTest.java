@@ -71,7 +71,9 @@ public class JsonByteArrayToClassifiedConverterTest {
      *
      * @throws java.io.IOException
      * @throws org.codehaus.jackson.map.JsonMappingException
+     *
      * @throws org.codehaus.jackson.JsonParseException
+     *
      */
     @Test
     public final void convertShouldSucceed() throws JsonParseException, JsonMappingException, IOException {

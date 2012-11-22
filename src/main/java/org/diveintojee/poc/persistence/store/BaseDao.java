@@ -28,7 +28,6 @@ public interface BaseDao {
     <T> int countByExample(final T exampleInstance);
 
     /**
-     *
      * @param entityClass
      * @param id
      * @param <T>
@@ -36,7 +35,6 @@ public interface BaseDao {
     <T> void delete(Class<T> entityClass, Object id);
 
     /**
-     *
      * @param attachedInstance
      */
     void evict(Object attachedInstance);

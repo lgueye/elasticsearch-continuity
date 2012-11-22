@@ -37,7 +37,7 @@ public class PreUpdateEventListener implements
         final Object eventEntity = event.getEntity();
         validator.validate((AbstractEntity) eventEntity, ValidationContext.UPDATE);
         if (eventEntity instanceof Classified) {
-          ((Classified)eventEntity).setUpdated(new DateTime());
+            ((Classified) eventEntity).setUpdated(new DateTime());
         }
         return false;
     }

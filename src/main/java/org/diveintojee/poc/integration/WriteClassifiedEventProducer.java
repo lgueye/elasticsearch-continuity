@@ -5,7 +5,7 @@ package org.diveintojee.poc.integration;
  */
 public interface WriteClassifiedEventProducer {
 
-  void unregisterListener(WriteClassifiedEventListener writeClassifiedEventListener);
+    void unregisterListener(WriteClassifiedEventListener writeClassifiedEventListener);
 
-  void registerListener(WriteClassifiedEventListener writeClassifiedEventListener);
+    void registerListener(WriteClassifiedEventListener writeClassifiedEventListener);
 }

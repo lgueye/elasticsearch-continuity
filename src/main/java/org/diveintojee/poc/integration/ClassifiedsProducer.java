@@ -1,7 +1,5 @@
 package org.diveintojee.poc.integration;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -16,7 +14,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class ClassifiedsProducer implements WriteClassifiedEventProducer {
 
     private Set<WriteClassifiedEventListener>
-        writeClassifiedEventListeners = new HashSet<WriteClassifiedEventListener>();
+            writeClassifiedEventListeners = new HashSet<WriteClassifiedEventListener>();
 
     private ConcurrentLinkedQueue<WriteClassifiedCommand> writeClassifiedsQueue = new ConcurrentLinkedQueue<WriteClassifiedCommand>();
 

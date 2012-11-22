@@ -4,18 +4,16 @@
 package org.diveintojee.poc.domain.validation;
 
 import com.google.common.base.Preconditions;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.diveintojee.poc.domain.AbstractEntity;
 import org.diveintojee.poc.domain.business.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author louis.gueye@gmail.com

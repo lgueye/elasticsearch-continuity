@@ -5,5 +5,5 @@ package org.diveintojee.poc.integration;
  */
 public interface WriteClassifiedEventListener {
 
-  void onMessage();
+    void onMessage();
 }

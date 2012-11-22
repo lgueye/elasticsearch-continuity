@@ -10,7 +10,6 @@ import org.diveintojee.poc.domain.validation.ValidationContext;
 import org.junit.Test;
 
 import java.util.Locale;
-import java.util.Set;
 
 /**
  * {@link Classified} validation testing<br/>
@@ -31,19 +30,19 @@ public class ClassifiedValidationTestIT extends BaseValidations {
         // Given
         String wrongData;
         underTest = TestFixtures.validClassified();
-      
+
         wrongData = null;
         underTest.setTitle(wrongData);
-  
+
         assertExpectedViolation(underTest, context, Locale.ENGLISH, "Title is required", "title");
         assertExpectedViolation(underTest, context, Locale.FRENCH, "Le titre est requis", "title");
-  
+
         wrongData = "";
         underTest.setTitle(wrongData);
-  
+
         assertExpectedViolation(underTest, context, Locale.ENGLISH, "Title is required", "title");
         assertExpectedViolation(underTest, context, Locale.FRENCH, "Le titre est requis", "title");
-  
+
     }
 
     /**
@@ -63,7 +62,7 @@ public class ClassifiedValidationTestIT extends BaseValidations {
                 + Classified.CONSTRAINT_DESCRIPTION_MAX_SIZE, "title");
 
     }
-  
+
     /**
      * Given : a valid classified valued with an invalid main offer<br/>
      * When : one persists the above classified<br/>
@@ -73,21 +72,21 @@ public class ClassifiedValidationTestIT extends BaseValidations {
         // Given
         String wrongData;
         underTest = TestFixtures.validClassified();
-        
+
         wrongData = null;
         underTest.setDescription(wrongData);
-    
+
         assertExpectedViolation(underTest, context, Locale.ENGLISH, "Description is required", "description");
         assertExpectedViolation(underTest, context, Locale.FRENCH, "La description est requise", "description");
-    
+
         wrongData = "";
         underTest.setDescription(wrongData);
-    
+
         assertExpectedViolation(underTest, context, Locale.ENGLISH, "Description is required", "description");
         assertExpectedViolation(underTest, context, Locale.FRENCH, "La description est requise", "description");
-  
+
     }
-  
+
     /**
      * Given : a valid classified valued with an invalid description<br/>
      * When : one persists the above classified<br/>

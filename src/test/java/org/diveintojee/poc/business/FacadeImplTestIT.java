@@ -5,10 +5,7 @@ package org.diveintojee.poc.business;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
-
 import junit.framework.Assert;
-
-import org.apache.commons.collections.CollectionUtils;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
@@ -26,39 +23,21 @@ import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 import org.elasticsearch.client.Client;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.DataSourceUtils;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.ResourceUtils;
 
-import java.sql.Connection;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
-
 import javax.sql.DataSource;
-import javax.validation.ConstraintViolationException;
+import java.sql.Connection;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 /**
@@ -110,7 +89,7 @@ public class FacadeImplTestIT {
         }
 
         String indexSettingsAsString = Resources
-            .toString(this.indexSettings.getURL(), Charsets.UTF_8);
+                .toString(this.indexSettings.getURL(), Charsets.UTF_8);
         CreateIndexResponse createIndexResponse = this.elasticsearch.admin().indices().prepareCreate(INDEX_NAME)
                 .setSettings(indexSettingsAsString).execute().actionGet();
         if (!createIndexResponse.acknowledged()) throw new IllegalStateException();
@@ -118,7 +97,7 @@ public class FacadeImplTestIT {
         String classifiedMappingAsString = Resources.toString(this.classifiedsMapping.getURL(), Charsets.UTF_8);
         PutMappingResponse putMappingResponse = this.elasticsearch.admin().indices().preparePutMapping(INDEX_NAME)
                 .setType(TYPE_NAME).setSource(classifiedMappingAsString).execute().actionGet();
-      if (!putMappingResponse.acknowledged()) throw new IllegalStateException();
+        if (!putMappingResponse.acknowledged()) throw new IllegalStateException();
     }
 
     @Test

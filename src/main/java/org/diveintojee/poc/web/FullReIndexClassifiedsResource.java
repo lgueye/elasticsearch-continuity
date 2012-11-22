@@ -20,7 +20,7 @@ public class FullReIndexClassifiedsResource {
     private Facade facade;
 
     @POST
-    public void stopConsuming() throws Throwable {
+    public void fullReIndexClassifieds() throws Throwable {
         facade.fullReIndexClassifieds();
     }
 

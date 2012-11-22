@@ -3,7 +3,6 @@ package org.diveintojee.poc.persistence.search.factory;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
@@ -125,10 +124,10 @@ public class ElasticSearchClientFactoryBean extends AbstractFactoryBean<Client> 
     }
 
     public void setDropCreateIndicesCommand(DropCreateIndicesCommand dropCreateIndicesCommand) {
-      this.dropCreateIndicesCommand = dropCreateIndicesCommand;
+        this.dropCreateIndicesCommand = dropCreateIndicesCommand;
     }
 
-  /**
+    /**
      * @see org.springframework.beans.factory.config.AbstractFactoryBean#getObjectType()
      */
     @Override

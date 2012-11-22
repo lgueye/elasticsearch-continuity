@@ -39,7 +39,7 @@ public class PreInsertEventListener implements
         final Object eventEntity = event.getEntity();
         validator.validate((AbstractEntity) eventEntity, ValidationContext.CREATE);
         if (eventEntity instanceof Classified) {
-            ((Classified)eventEntity).setCreated(new DateTime());
+            ((Classified) eventEntity).setCreated(new DateTime());
         }
         return false;
     }

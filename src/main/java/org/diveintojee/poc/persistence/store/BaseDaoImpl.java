@@ -11,12 +11,11 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Map;
-
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author louis.gueye@gmail.com

@@ -1,5 +1,6 @@
 package org.diveintojee.poc.integration;
 
+import org.diveintojee.poc.domain.Classified;
 import org.diveintojee.poc.persistence.search.SearchEngine;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,14 +44,16 @@ public class ClassifiedsConsumer implements WriteClassifiedEventListener, Initia
     public void onMessage() {
         WriteClassifiedCommand command = classifiedsProducer.consume();
         final Operation operation = command.getOperation();
+        Classified classified = command.getClassified();
         switch (operation) {
             case delete:
-              searchEngine.removeFromIndex(command.getClassified());break;
+                searchEngine.removeFromIndex(classified);
+                break;
             case write:
-              searchEngine.index(command.getClassified());break;
+                searchEngine.index(classified);
+                break;
             default:
-              throw new UnsupportedOperationException("Command operation '" + operation + "' not yet supported");
-          }
-          System.out.println("new message arrived: " + command);
+                throw new UnsupportedOperationException("Command operation '" + operation + "' not yet supported");
+        }
     }
 }

@@ -1,7 +1,6 @@
 package org.diveintojee.poc.persistence.search;
 
 import com.google.common.collect.Lists;
-
 import org.diveintojee.poc.domain.Classified;
 import org.elasticsearch.action.ListenableActionFuture;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -65,5 +64,5 @@ public class SearchEngineImplTest {
         assertSame(classifieds, results);
 
     }
-  
+
 }

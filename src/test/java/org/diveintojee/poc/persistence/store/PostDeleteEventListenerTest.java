@@ -1,10 +1,8 @@
 package org.diveintojee.poc.persistence.store;
 
-import org.diveintojee.poc.domain.AbstractEntity;
 import org.diveintojee.poc.integration.ClassifiedsProducer;
 import org.diveintojee.poc.integration.Operation;
 import org.diveintojee.poc.integration.WriteClassifiedCommand;
-import org.diveintojee.poc.persistence.search.SearchEngine;
 import org.hibernate.event.spi.PostDeleteEvent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,9 +12,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.*;
 
 /**
  * User: lgueye Date: 24/10/12 Time: 19:27
@@ -35,7 +31,7 @@ public class PostDeleteEventListenerTest {
         PostDeleteEvent event = mock(PostDeleteEvent.class);
         underTest.onPostDelete(event);
         final ArgumentCaptor<WriteClassifiedCommand> argumentCaptor =
-                      ArgumentCaptor.forClass(WriteClassifiedCommand.class);
+                ArgumentCaptor.forClass(WriteClassifiedCommand.class);
         verify(classifiedsProducer).write(argumentCaptor.capture());
         assertEquals(event.getEntity(), argumentCaptor.getValue().getClassified());
         assertEquals(Operation.delete, argumentCaptor.getValue().getOperation());

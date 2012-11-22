@@ -5,7 +5,6 @@ package org.diveintojee.poc.persistence.search;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
-
 import org.diveintojee.poc.TestConstants;
 import org.diveintojee.poc.TestFixtures;
 import org.diveintojee.poc.domain.Classified;
@@ -31,16 +30,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author louis.gueye@gmail.com
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class})
-@ContextConfiguration( {TestConstants.SERVER_CONTEXT, TestConstants.SEARCH_CONTEXT_TEST})
+@ContextConfiguration({TestConstants.SERVER_CONTEXT, TestConstants.SEARCH_CONTEXT_TEST})
 public class SearchClassifiedTestIT {
 
     @Autowired

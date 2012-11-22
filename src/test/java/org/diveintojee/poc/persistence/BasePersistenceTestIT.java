@@ -22,9 +22,8 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
 
-import java.sql.Connection;
-
 import javax.sql.DataSource;
+import java.sql.Connection;
 
 /**
  * Base class for database integration testing<br/>

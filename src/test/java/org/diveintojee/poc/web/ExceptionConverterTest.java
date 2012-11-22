@@ -15,12 +15,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.servlet.LocaleResolver;
 
-import java.util.Locale;
-
 import javax.servlet.http.HttpServletRequest;
+import java.util.Locale;
 
 /**
  * @author louis.gueye@gmail.com

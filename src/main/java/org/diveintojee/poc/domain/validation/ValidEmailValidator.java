@@ -5,10 +5,9 @@ package org.diveintojee.poc.domain.validation;
 
 import com.google.common.base.Strings;
 
-import java.util.regex.Pattern;
-
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.util.regex.Pattern;
 
 /**
  * @author louis.gueye@gmail.com

@@ -1,7 +1,6 @@
 package org.diveintojee.poc.persistence.search;
 
 import com.google.common.collect.Maps;
-
 import org.diveintojee.poc.domain.Classified;
 import org.elasticsearch.index.query.MatchAllQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -11,9 +10,7 @@ import org.junit.Test;
 
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * User: lgueye Date: 17/09/12 Time: 15:04

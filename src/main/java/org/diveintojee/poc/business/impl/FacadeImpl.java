@@ -45,9 +45,9 @@ public class FacadeImpl implements Facade {
     @Transactional(propagation = Propagation.REQUIRED)
     public Long createClassified(Classified classified) {
         if (classified == null) {
-          String message = "create classified - classified is required";
-          LOGGER.error(message);
-          throw new IllegalArgumentException(message);
+            String message = "create classified - classified is required";
+            LOGGER.error(message);
+            throw new IllegalArgumentException(message);
         }
         this.validator.validate(classified, ValidationContext.CREATE);
         this.baseDao.persist(classified);
@@ -67,15 +67,15 @@ public class FacadeImpl implements Facade {
     @Transactional(readOnly = true)
     public Classified readClassified(Long id) {
         if (id == null) {
-          String message = "read classified - classified id is required";
-          LOGGER.error(message);
-          throw new IllegalArgumentException(message);
+            String message = "read classified - classified id is required";
+            LOGGER.error(message);
+            throw new IllegalArgumentException(message);
         }
         Classified classified = baseDao.get(Classified.class, id);
         if (classified == null) {
-          String message = "read classified - Classified [id = {0}] was not found";
-          LOGGER.error(message);
-          throw new BusinessException("classified.not.found", null, message);
+            String message = "read classified - Classified [id = {0}] was not found";
+            LOGGER.error(message);
+            throw new BusinessException("classified.not.found", null, message);
         }
         return classified;
     }
@@ -84,22 +84,22 @@ public class FacadeImpl implements Facade {
     @Transactional(propagation = Propagation.REQUIRED)
     public void deleteClassified(Long id) {
         if (id == null) {
-          String message = "read classified - classified id is required";
-          LOGGER.error(message);
-          throw new IllegalArgumentException(message);
+            String message = "read classified - classified id is required";
+            LOGGER.error(message);
+            throw new IllegalArgumentException(message);
         }
         Classified classified = baseDao.get(Classified.class, id);
         if (classified != null) {
-          baseDao.delete(Classified.class, id);
+            baseDao.delete(Classified.class, id);
         }
     }
 
     @Override
     public List<Classified> findClassifiedsByCriteria(Classified criteria) {
         if (criteria == null) {
-          String message = "search classified - classified is required";
-          LOGGER.error(message);
-          throw new IllegalArgumentException(message);
+            String message = "search classified - classified is required";
+            LOGGER.error(message);
+            throw new IllegalArgumentException(message);
         }
         return searchEngine.findClassifiedsByCriteria(criteria);
     }

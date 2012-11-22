@@ -1,10 +1,6 @@
 package org.diveintojee.poc.integration;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Strings;
-
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 import org.diveintojee.poc.domain.Classified;
 
 /**
@@ -23,8 +19,8 @@ public class WriteClassifiedCommand {
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
-            .add("classified", classified)
-            .add("opreation", operation).toString();
+                .add("classified", classified)
+                .add("opreation", operation).toString();
     }
 
     public Classified getClassified() {

@@ -13,19 +13,18 @@ import org.diveintojee.poc.domain.Classified;
 import org.joda.time.DateTime;
 import org.junit.Assert;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ResourceBundle;
-import java.util.Set;
-
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ResourceBundle;
+import java.util.Set;
 
 /**
  * @author louis.gueye@gmail.com
@@ -132,10 +131,10 @@ public abstract class TestFixtures {
         final Classified classified = new Classified();
         classified.setCreated(new DateTime());
         classified.setTitle(RandomStringUtils.random(Classified.CONSTRAINT_TITLE_MAX_SIZE,
-                                                     TestFixtures.STANDARD_CHARSET));
+                TestFixtures.STANDARD_CHARSET));
         classified.setDescription(
-            RandomStringUtils.random(Classified.CONSTRAINT_DESCRIPTION_MAX_SIZE,
-                                     TestFixtures.STANDARD_CHARSET));
+                RandomStringUtils.random(Classified.CONSTRAINT_DESCRIPTION_MAX_SIZE,
+                        TestFixtures.STANDARD_CHARSET));
         return classified;
     }
 }

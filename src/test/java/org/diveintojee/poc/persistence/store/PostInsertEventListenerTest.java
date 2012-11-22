@@ -12,9 +12,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.*;
 
 /**
  * User: lgueye Date: 24/10/12 Time: 19:28
@@ -33,7 +31,7 @@ public class PostInsertEventListenerTest {
         PostInsertEvent event = mock(PostInsertEvent.class);
         underTest.onPostInsert(event);
         final ArgumentCaptor<WriteClassifiedCommand> argumentCaptor =
-                      ArgumentCaptor.forClass(WriteClassifiedCommand.class);
+                ArgumentCaptor.forClass(WriteClassifiedCommand.class);
         verify(classifiedsProducer).write(argumentCaptor.capture());
         assertEquals(event.getEntity(), argumentCaptor.getValue().getClassified());
         assertEquals(Operation.write, argumentCaptor.getValue().getOperation());

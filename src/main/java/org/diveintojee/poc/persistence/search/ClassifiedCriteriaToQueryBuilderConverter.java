@@ -2,7 +2,6 @@ package org.diveintojee.poc.persistence.search;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
-
 import org.diveintojee.poc.domain.Classified;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;

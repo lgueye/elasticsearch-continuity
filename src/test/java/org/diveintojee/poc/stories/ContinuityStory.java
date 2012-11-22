@@ -27,7 +27,7 @@ public class ContinuityStory extends AbstractJUnitStories {
     @Override
     protected List<String> storyPaths() {
         List<String> paths = new StoryFinder().findPaths(CodeLocations.codeLocationFromClass(
-            SearchClassifiedsResource.class).getFile(),
+                SearchClassifiedsResource.class).getFile(),
                 Arrays.asList("**/continuity.story"), null);
         //System.out.println("paths = " + paths);
         return paths;

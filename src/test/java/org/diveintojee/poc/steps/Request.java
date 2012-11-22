@@ -1,8 +1,7 @@
 package org.diveintojee.poc.steps;
 
-import java.util.Locale;
-
 import javax.ws.rs.core.MediaType;
+import java.util.Locale;
 
 /**
  * User: louis.gueye@gmail.com

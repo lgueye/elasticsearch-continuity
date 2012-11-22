@@ -53,7 +53,7 @@ public class Exchange {
      * @return
      */
     public URI getLocation() {
-      return this.clientResponse.getLocation();
+        return this.clientResponse.getLocation();
     }
 
     /**
@@ -108,7 +108,8 @@ public class Exchange {
     }
 
     public List<Classified> classifiedsFromResponse() {
-        return this.clientResponse.getEntity(new GenericType<List<Classified>>() {});
+        return this.clientResponse.getEntity(new GenericType<List<Classified>>() {
+        });
     }
 
     public void stopConsuming() {
