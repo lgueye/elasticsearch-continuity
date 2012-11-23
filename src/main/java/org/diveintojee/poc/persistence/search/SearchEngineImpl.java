@@ -142,23 +142,4 @@ public class SearchEngineImpl implements SearchEngine {
 
     }
 
-    private String getNewIndexName(String currentIndexName) {
-        return "classifieds-a".equals(currentIndexName) ? "classifieds-b" : "classifieds-a";
-    }
-
-    private String getCurrentIndexName(IndicesAdminClient indicesAdminClient) {
-        String currentIndexName;
-        final boolean classifiedsAExists = indicesAdminClient.prepareExists("classifieds-a").execute().actionGet().exists();
-        final boolean classifiedsBExists = indicesAdminClient.prepareExists("classifieds-b").execute().actionGet().exists();
-        if (classifiedsAExists && classifiedsBExists) {
-            throw new IllegalStateException("Only 1 classifieds index should exist at a time");
-        } else if (!classifiedsAExists && !classifiedsBExists) {
-            currentIndexName = "classifieds-a";
-        } else if (classifiedsAExists) {
-            currentIndexName = "classifieds-b";
-        } else {
-            currentIndexName = "classifieds-a";
-        }
-        return currentIndexName;
-    }
 }
