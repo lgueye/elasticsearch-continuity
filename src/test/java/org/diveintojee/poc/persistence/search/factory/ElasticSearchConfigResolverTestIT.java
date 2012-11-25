@@ -40,7 +40,7 @@ public class ElasticSearchConfigResolverTestIT {
         Map<String, Object> config =
                 underTest.resolveIndicesConfig(rootFolder, "json");
 
-        
+
         assertNotNull(indexConfigurations);
         assertEquals(2, indexConfigurations.size());
         Collection<String>
