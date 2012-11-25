@@ -3,6 +3,7 @@ package org.diveintojee.poc.persistence.search;
 import org.diveintojee.poc.domain.AbstractEntity;
 import org.diveintojee.poc.domain.Classified;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -20,5 +21,5 @@ public interface SearchEngine {
 
     void removeFromIndex(AbstractEntity entity);
 
-    void reIndexClassifieds();
+    void reIndexClassifieds() throws IOException;
 }

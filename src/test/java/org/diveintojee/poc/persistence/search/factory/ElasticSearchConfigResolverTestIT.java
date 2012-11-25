@@ -1,10 +1,10 @@
-package org.diveintojee.poc.persistence.search;
+package org.diveintojee.poc.persistence.search.factory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import org.diveintojee.poc.TestConstants;
-import org.diveintojee.poc.persistence.search.factory.DropCreateIndicesCommand;
+import org.diveintojee.poc.persistence.search.factory.ElasticSearchConfigResolver;
 import org.diveintojee.poc.persistence.search.factory.IndexConfiguration;
 import org.diveintojee.poc.persistence.search.factory.MappingConfiguration;
 import org.junit.Test;
@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import static org.junit.Assert.*;
@@ -27,18 +28,19 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({TestConstants.SERVER_CONTEXT, TestConstants.SEARCH_CONTEXT_TEST})
-public class DropCreateIndicesCommandTestIT {
+public class ElasticSearchConfigResolverTestIT {
 
     @Autowired
-    private DropCreateIndicesCommand underTest;
+    private ElasticSearchConfigResolver underTest;
 
     @Test
-    public void scanIndexConfigurationsITTestShouldSucceed() throws IOException {
+    public void resolveIndicesConfigShouldSucceed() throws IOException {
 
         File rootFolder = new ClassPathResource("/testelasticsearchlayout").getFile();
-        List<IndexConfiguration>
-                indexConfigurations =
-                underTest.scanIndexConfigurations(rootFolder, "json");
+        Map<String, Object> config =
+                underTest.resolveIndicesConfig(rootFolder, "json");
+
+        
         assertNotNull(indexConfigurations);
         assertEquals(2, indexConfigurations.size());
         Collection<String>

@@ -3,10 +3,7 @@ package org.diveintojee.poc.persistence.search.factory;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
-import com.google.common.collect.Maps;
-
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
@@ -14,16 +11,12 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
 import org.springframework.beans.factory.BeanCreationException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -46,17 +39,15 @@ public class ElasticSearchClientFactoryBean extends AbstractFactoryBean<Client> 
 
     private String configFormat;
 
-    private Client client;
+    private Client elasticsearch;
 
     private Node node;
 
-    private DropCreateIndicesCommand dropCreateIndicesCommand;
+    private DropCreateIndexCommand dropCreateIndexCommand;
 
     private MergeIndicesCommand mergeIndicesCommand;
 
-    private FileHelper fileHelper;
-
-    public static final String ELASTICSEARCH_CONFIGURATION_ROOT_FOLDER_NAME = "/elasticsearch";
+    private ElasticSearchConfigResolver elasticSearchConfigResolver;
 
     /**
      * Required
@@ -85,7 +76,7 @@ public class ElasticSearchClientFactoryBean extends AbstractFactoryBean<Client> 
      *      <list>
      *        <value>jack:9300</value>
      *        <value>sparrow:9300</value>
-     *        <value>bill:9300</value>
+     *        <value>bill:9300</value>client
      *        <value>bottier:9300</value>
      *      </list>
      *    </property>
@@ -116,6 +107,7 @@ public class ElasticSearchClientFactoryBean extends AbstractFactoryBean<Client> 
     }
 
     /**
+     * newIndexName
      * Optional
      * Defaults to dropcreate
      * Supported values: {dropcreate|merge}
@@ -135,15 +127,15 @@ public class ElasticSearchClientFactoryBean extends AbstractFactoryBean<Client> 
         this.configFormat = configFormat;
     }
 
-    public void setDropCreateIndicesCommand(DropCreateIndicesCommand dropCreateIndicesCommand) {
-        this.dropCreateIndicesCommand = dropCreateIndicesCommand;
+    public void setDropCreateIndexCommand(DropCreateIndexCommand dropCreateIndexCommand) {
+        this.dropCreateIndexCommand = dropCreateIndexCommand;
     }
 
-    public void setFileHelper(FileHelper fileHelper) {
-      this.fileHelper = fileHelper;
+    public void setElasticSearchConfigResolver(ElasticSearchConfigResolver elasticSearchConfigResolver) {
+        this.elasticSearchConfigResolver = elasticSearchConfigResolver;
     }
 
-  /**
+    /**
      * @see org.springframework.beans.factory.config.AbstractFactoryBean#getObjectType()
      */
     @Override
@@ -157,85 +149,31 @@ public class ElasticSearchClientFactoryBean extends AbstractFactoryBean<Client> 
     @Override
     public void afterPropertiesSet() throws Exception {
         super.afterPropertiesSet();
-        
-      if (Strings.isNullOrEmpty(configFormat))
-          configFormat = "json";
-
-      Map<String, Object> config = resolveElasticsearchConfig(configFormat);
-
-      applyIndicesUpdateStrategy(config);
+        applyIndicesUpdateStrategy();
     }
 
-  Map<String, Object> resolveElasticsearchConfig(String format) throws IOException {
-    final HashMap<String,Object> config = Maps.newHashMap();
-    File rootFolder = new ClassPathResource(ELASTICSEARCH_CONFIGURATION_ROOT_FOLDER_NAME).getFile();
-    String nodeSettingsLocation = rootFolder.getAbsolutePath().concat(File.separator).concat("_settings.").concat(format);
-    String settingsAsString = fileHelper.fileContentAsString(nodeSettingsLocation);
-    System.out.println("resolved node settings = " + settingsAsString);
-    config.put("settings", settingsAsString);
-    Map<String, Object> indices = resolveIndicesConfig(rootFolder, format);
-    config.put("indices", indices);
+    void applyIndicesUpdateStrategy() throws IOException {
 
-    return config;
-  }
+        if (Strings.isNullOrEmpty(configFormat))
+            configFormat = "json";
 
-  Map<String, Object> resolveIndicesConfig(File rootFolder, String format)
-      throws IOException {
-    File[] folders = fileHelper.listChildrenDirectories(rootFolder);
-    Map<String, Object> indices = Maps.newHashMap();
-    if (ArrayUtils.isEmpty(folders)) {
-      System.out.println("no children directory found under " + rootFolder);
-      return indices;
-    }
-    // Iterating under /elasticsearch
-    for (File folder : folders) {
-      String indexPath = folder.getPath();
-      String name = indexPath.substring(indexPath.lastIndexOf(File.separator) + 1, indexPath.length());
-      System.out.println("resolved index name = " + name);
-      String indexSettingsAsString = null;
-      Collection<File> indexFiles = fileHelper.listFilesByExtension(folder, format);
-      if (indexFiles.isEmpty()) {
-        System.out.println("no document under " + indexPath + "found with extension " + format);
-      }
-      Iterator<File> indexFilesIterator = indexFiles.iterator();
-      Map<String, Object> mappings = Maps.newHashMap();
-      while (indexFilesIterator.hasNext()) {
-          File file = indexFilesIterator.next();
-          if (file.getAbsolutePath().contains("_settings.")) {
-            String indexSettingsLocation = indexPath.concat(File.separator).concat("_settings.").concat(format);
-            indexSettingsAsString = fileHelper.fileContentAsString(indexSettingsLocation);
-            System.out.println("resolved index settings = " + indexSettingsAsString);
-          } else {
-            String mappingPath = file.getPath();
-            String type = mappingPath.substring(mappingPath.lastIndexOf(File.separator) + 1, mappingPath.indexOf("." + format));
-            System.out.println("resolved index type = " + type);
-            final String mappingAsString = fileHelper.fileContentAsString(mappingPath);
-            System.out.println("resolved mapping content = " + mappingAsString);
-            mappings.put(type, mappingAsString);
-          }
-      }
-
-      Map<String, Object> index = Maps.newHashMap();
-      index.put("settings", indexSettingsAsString);
-      index.put("mappings", mappings);
-      indices.put(name, index);
-
-    }
-
-    return indices;
-  }
-
-    void applyIndicesUpdateStrategy(Map<String, Object> config) throws IOException {
+        Map<String, Object> config = elasticSearchConfigResolver.resolveElasticsearchConfig(configFormat);
 
         if (indicesUpdateStrategy == null)
             indicesUpdateStrategy = IndicesUpdateStrategy.dropcreate;
 
         switch (indicesUpdateStrategy) {
             case dropcreate:
-                dropCreateIndicesCommand.apply(client, config);
+                final Map<String, Object> indices = (Map<String, Object>) config.get("indices");
+
+                for (String indexRootName : indices.keySet()) {
+                    Map<String, Object> index = (Map<String, Object>) indices.get(indexRootName);
+                    dropCreateIndexCommand.execute(elasticsearch.admin().indices(), indexRootName, index);
+                }
+
                 break;
             case merge:
-                mergeIndicesCommand.execute(client, configFormat);
+                mergeIndicesCommand.execute(elasticsearch, configFormat);
                 break;
         }
     }
@@ -262,7 +200,7 @@ public class ElasticSearchClientFactoryBean extends AbstractFactoryBean<Client> 
                 NodeBuilder nodeBuilder = NodeBuilder.nodeBuilder();
                 nodeBuilder.settings().loadFromUrl(nodeConfigLocation.getURL());
                 node = nodeBuilder.node();
-                client = node.client();
+                elasticsearch = node.client();
                 break;
 
             case remote:
@@ -275,15 +213,15 @@ public class ElasticSearchClientFactoryBean extends AbstractFactoryBean<Client> 
                 ImmutableSettings.Builder builder = ImmutableSettings.settingsBuilder();
                 builder.loadFromUrl(nodeConfigLocation.getURL());
                 builder.put("client.transport.sniff", true);
-                client = new TransportClient(builder.build());
+                elasticsearch = new TransportClient(builder.build());
                 for (InetSocketTransportAddress address : addresses) {
-                    ((TransportClient) client).addTransportAddress(address);
+                    ((TransportClient) elasticsearch).addTransportAddress(address);
                 }
                 break;
 
         }
 
-        return client;
+        return elasticsearch;
 
     }
 
@@ -310,8 +248,8 @@ public class ElasticSearchClientFactoryBean extends AbstractFactoryBean<Client> 
     @Override
     public void destroy() throws Exception {
         super.destroy();
-        if (client != null) {
-            client.close();
+        if (elasticsearch != null) {
+            elasticsearch.close();
         }
         if (node != null) {
             node.close();
