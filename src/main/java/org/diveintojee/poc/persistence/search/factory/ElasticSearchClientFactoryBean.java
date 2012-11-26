@@ -164,11 +164,11 @@ public class ElasticSearchClientFactoryBean extends AbstractFactoryBean<Client> 
 
         switch (indicesUpdateStrategy) {
             case dropcreate:
-                final Map<String, Object> indices = (Map<String, Object>) config.get("indices");
-
-                for (String indexRootName : indices.keySet()) {
-                    Map<String, Object> index = (Map<String, Object>) indices.get(indexRootName);
-                    dropCreateIndexCommand.execute(elasticsearch.admin().indices(), indexRootName, index);
+                for (String indexRootName : config.keySet()) {
+                    if (!"settings".equalsIgnoreCase(indexRootName)) {
+                        Map<String, Object> index = (Map<String, Object>) config.get(indexRootName);
+                        dropCreateIndexCommand.execute(elasticsearch.admin().indices(), indexRootName, index);
+                    }
                 }
 
                 break;

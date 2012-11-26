@@ -118,4 +118,11 @@ public class Exchange {
                 .accept(this.request.getRequestedType()).acceptLanguage(this.request.getRequestedLanguage())
                 .post(ClientResponse.class);
     }
+
+    public void startConsuming() {
+      final URI uri = newURI(this.request.getUri());
+      this.clientResponse = this.jerseyClient.resource(uri).type(this.request.getType())
+              .accept(this.request.getRequestedType()).acceptLanguage(this.request.getRequestedLanguage())
+              .post(ClientResponse.class);
+    }
 }

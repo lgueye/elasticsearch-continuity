@@ -10,7 +10,8 @@
                 <value>localhost:9300</value>
             </list>
         </property>
-        <property name="dropCreateIndicesCommand" ref="dropCreateIndicesCommand"/>
+        <property name="dropCreateIndexCommand" ref="dropCreateIndexCommand"/>
+        <property name="elasticSearchConfigResolver" ref="elasticSearchConfigResolver"/>
     </bean>
 
 </beans>

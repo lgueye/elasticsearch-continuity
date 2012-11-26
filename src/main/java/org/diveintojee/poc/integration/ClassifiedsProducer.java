@@ -40,6 +40,6 @@ public class ClassifiedsProducer implements WriteClassifiedEventProducer {
     }
 
     public WriteClassifiedCommand consume() {
-        return writeClassifiedsQueue.remove();
+        return writeClassifiedsQueue.poll();
     }
 }

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -105,13 +106,13 @@ public class FacadeImpl implements Facade {
     }
 
     @Override
-    public void fullReIndexClassifieds() {
+    public void fullReIndexClassifieds() throws IOException {
         searchEngine.reIndexClassifieds();
     }
 
-    @Override
-    public void startConsumingClassifieds() {
-        classifiedsConsumer.startConsumingClassifieds();
+  @Override
+  public void startConsumingClassifiedsWriteCommands() {
+      classifiedsConsumer.startConsumingWriteCommands();
     }
 
     @Override

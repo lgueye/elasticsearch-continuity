@@ -6,6 +6,7 @@ package org.diveintojee.poc.domain.business;
 
 import org.diveintojee.poc.domain.Classified;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -25,10 +26,9 @@ public interface Facade {
 
     List<Classified> findClassifiedsByCriteria(Classified criteria);
 
-    void fullReIndexClassifieds();
-
-    void startConsumingClassifieds();
+    void fullReIndexClassifieds() throws IOException;
 
     void stopConsumingClassifiedsWriteCommands();
 
+    void startConsumingClassifiedsWriteCommands();
 }

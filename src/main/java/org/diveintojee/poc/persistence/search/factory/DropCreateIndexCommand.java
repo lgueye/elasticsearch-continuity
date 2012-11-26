@@ -26,18 +26,20 @@ public class DropCreateIndexCommand {
         if (indexAExists && indexBExists) {
             throw new IllegalStateException("Only 1 " + indexRootName + " index should exist at a time");
         } else if (!indexAExists && !indexBExists) {
-            oldIndexName = indexRootName + "-a";
-        } else if (indexAExists) {
             oldIndexName = indexRootName + "-b";
-        } else {
+        } else if (indexAExists) {
             oldIndexName = indexRootName + "-a";
+        } else {
+            oldIndexName = indexRootName + "-b";
         }
         return oldIndexName;
     }
 
     public String execute(IndicesAdminClient indicesAdminClient, String indexRootName, Map<String, Object> index) {
         String oldIndexName = resolveOldIndexName(indicesAdminClient, indexRootName);
+        System.out.println("resolved oldIndexName = " + oldIndexName);
         String newIndexName = resolveNewIndexName(oldIndexName, indexRootName);
+        System.out.println("resolved newIndexName = " + newIndexName);
         String settings = (String) index.get("settings");
         CreateIndexResponse
                 createIndexResponse =
@@ -70,17 +72,19 @@ public class DropCreateIndexCommand {
             throw new RuntimeException("Failed to add index '" + newIndexName + "' to alias '" + indexRootName + "'");
         }
 
-        final
-        IndicesAliasesResponse
-                indicesAliasesRemoveResponse =
-                indicesAdminClient.prepareAliases().removeAlias(oldIndexName, indexRootName)
-                        .execute().actionGet();
+        final boolean oldIndexExists = indicesAdminClient.prepareExists(oldIndexName).execute().actionGet().exists();
 
-        if (!indicesAliasesRemoveResponse.acknowledged()) {
-            throw new RuntimeException("Failed to remove index '" + oldIndexName + "' from alias '" + indexRootName + "'");
-        }
+        if (oldIndexExists) {
+            final
+            IndicesAliasesResponse
+                    indicesAliasesRemoveResponse =
+                    indicesAdminClient.prepareAliases().removeAlias(oldIndexName, indexRootName)
+                            .execute().actionGet();
 
-        if (indicesAdminClient.prepareExists(oldIndexName).execute().actionGet().exists()) {
+            if (!indicesAliasesRemoveResponse.acknowledged()) {
+                throw new RuntimeException("Failed to remove index '" + oldIndexName + "' from alias '" + indexRootName + "'");
+            }
+
             DeleteIndexResponse
                     deleteIndexResponse =
                     indicesAdminClient.prepareDelete(oldIndexName).execute().actionGet();

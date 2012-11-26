@@ -36,6 +36,9 @@ public class ContinuitySteps extends BackendBaseSteps {
     private static final String STOP_CONSUMING_URI = UriBuilder.fromPath(WebConstants.BACKEND_PATH)
             .path(StopConsumingClassifiedWriteCommandsResource.class).build().toString();
 
+    private static final String START_CONSUMING_URI = UriBuilder.fromPath(WebConstants.BACKEND_PATH)
+            .path(StartConsumingClassifiedWriteCommandsResource.class).build().toString();
+
     private List<URI> createdClassifiedUris = Lists.newArrayList();
     private static final String CREATE_URI = UriBuilder.fromPath(WebConstants.BACKEND_PATH)
             .path(ClassifiedsResource.COLLECTION_RESOURCE_PATH).build().toString();
@@ -54,7 +57,7 @@ public class ContinuitySteps extends BackendBaseSteps {
             Map<String, String> row = table.getRow(i);
             Classified classified = fromRow(row);
             exchange.getRequest().setBody(classified);
-            exchange.setCredentials("louis@rmgr.com", "secret");
+            //exchange.setCredentials("louis@rmgr.com", "secret");
             exchange.getRequest().setUri(CREATE_URI);
             exchange.createEntity();
             final URI uri = exchange.getLocation();
@@ -70,7 +73,7 @@ public class ContinuitySteps extends BackendBaseSteps {
             Map<String, String> row = table.getRow(i);
             Classified classified = fromRow(row);
             exchange.getRequest().setBody(classified);
-            exchange.setCredentials("louis@rmgr.com", "secret");
+            //exchange.setCredentials("louis@rmgr.com", "secret");
             exchange.getRequest().setUri(CREATE_URI);
             exchange.createEntity();
             final URI uri = exchange.getLocation();
@@ -138,7 +141,8 @@ public class ContinuitySteps extends BackendBaseSteps {
 
     @When("the system starts consuming messages")
     public void startConsuming() {
-        throw new UnsupportedOperationException("Not yet implemented");
+      this.exchange.getRequest().setUri(START_CONSUMING_URI);
+      this.exchange.startConsuming();
     }
 
     private Map<String, String> actualRow(Classified classified) {
@@ -151,7 +155,7 @@ public class ContinuitySteps extends BackendBaseSteps {
     @AfterStory
     public void afterStory() {
         Exchange exchange = new Exchange();
-        exchange.setCredentials("louis@rmgr.com", "secret");
+        //exchange.setCredentials("louis@rmgr.com", "secret");
         for (URI createdClassifiedUri : createdClassifiedUris) {
             exchange.getRequest().setUri(createdClassifiedUri.toString());
             exchange.deleteEntity();

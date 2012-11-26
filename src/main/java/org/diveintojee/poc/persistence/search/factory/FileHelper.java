@@ -31,7 +31,6 @@ public class FileHelper {
         return Resources.toString(new ClassPathResource(fileLocation).getURL(), Charsets.UTF_8);
     }
 
-
     public File[] listChildrenDirectories(File parent) {
         return parent.listFiles((FileFilter) FileFilterUtils.directoryFileFilter());
     }

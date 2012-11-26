@@ -33,6 +33,7 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable> {
      */
     @Override
     public Response toResponse(final Throwable th) {
+
         final ResponseError error = this.exceptionConverter.toResponseError(th, this.request);
 
         final String preferredResponseMediaType = this.request.getHeader("Accept");

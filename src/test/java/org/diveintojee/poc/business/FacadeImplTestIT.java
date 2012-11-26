@@ -18,6 +18,8 @@ import org.diveintojee.poc.domain.business.Facade;
 import org.diveintojee.poc.domain.exceptions.BusinessException;
 import org.diveintojee.poc.persistence.search.SearchIndices;
 import org.diveintojee.poc.persistence.search.SearchTypes;
+import org.diveintojee.poc.persistence.search.factory.DropCreateIndexCommand;
+import org.diveintojee.poc.persistence.search.factory.ElasticSearchConfigResolver;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
@@ -36,6 +38,7 @@ import org.springframework.util.ResourceUtils;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -59,14 +62,23 @@ public class FacadeImplTestIT {
     @Autowired
     private Client elasticsearch;
 
-    @Value("classpath:/elasticsearch/classifieds/_settings.json")
-    private Resource indexSettings;
+    @Autowired
+    private ElasticSearchConfigResolver elasticSearchConfigResolver;
 
-    @Value("classpath:/elasticsearch/classifieds/classified.json")
-    private Resource classifiedsMapping;
+    @Autowired
+    private DropCreateIndexCommand dropCreateIndexCommand;
 
-    private static final String INDEX_NAME = SearchIndices.classifieds.toString();
-    private static final String TYPE_NAME = SearchTypes.classified.toString();
+//
+//    @Value("classpath:/elasticsearch/classifieds/_settings.json")
+//    private Resource indexSettings;
+//
+//    @Value("classpath:/elasticsearch/classifieds/classified.json")
+//    private Resource classifiedsMapping;
+//
+//    private static final String INDEX_NAME = SearchIndices.classifieds.toString();
+//    private static final String TYPE_NAME = SearchTypes.classified.toString();
+
+
 
     @Before
     public void onSetUpInTransaction() throws Exception {
@@ -81,23 +93,15 @@ public class FacadeImplTestIT {
             DataSourceUtils.releaseConnection(con, this.dataSource);
         }
 
-        // Deletes index if already exists
-        if (this.elasticsearch.admin().indices().prepareExists(INDEX_NAME).execute().actionGet().exists()) {
-            DeleteIndexResponse deleteIndexResponse = this.elasticsearch.admin().indices().prepareDelete(INDEX_NAME)
-                    .execute().actionGet();
-            deleteIndexResponse.acknowledged();
+        Map<String, Object> config = elasticSearchConfigResolver.resolveElasticsearchConfig("json");
+
+        for (String indexRootName : config.keySet()) {
+            if (!"settings".equalsIgnoreCase(indexRootName)) {
+                Map<String, Object> index = (Map<String, Object>) config.get(indexRootName);
+                dropCreateIndexCommand.execute(elasticsearch.admin().indices(), indexRootName, index);
+            }
         }
 
-        String indexSettingsAsString = Resources
-                .toString(this.indexSettings.getURL(), Charsets.UTF_8);
-        CreateIndexResponse createIndexResponse = this.elasticsearch.admin().indices().prepareCreate(INDEX_NAME)
-                .setSettings(indexSettingsAsString).execute().actionGet();
-        if (!createIndexResponse.acknowledged()) throw new IllegalStateException();
-
-        String classifiedMappingAsString = Resources.toString(this.classifiedsMapping.getURL(), Charsets.UTF_8);
-        PutMappingResponse putMappingResponse = this.elasticsearch.admin().indices().preparePutMapping(INDEX_NAME)
-                .setType(TYPE_NAME).setSource(classifiedMappingAsString).execute().actionGet();
-        if (!putMappingResponse.acknowledged()) throw new IllegalStateException();
     }
 
     @Test

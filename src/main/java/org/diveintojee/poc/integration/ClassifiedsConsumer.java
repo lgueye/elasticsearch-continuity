@@ -22,8 +22,9 @@ public class ClassifiedsConsumer implements WriteClassifiedEventListener, Initia
         classifiedsProducer.unregisterListener(this);
     }
 
-    public void startConsumingClassifieds() {
+    public void startConsumingWriteCommands() {
         classifiedsProducer.registerListener(this);
+        onMessage();
     }
 
     /**
@@ -37,12 +38,13 @@ public class ClassifiedsConsumer implements WriteClassifiedEventListener, Initia
      */
     @Override
     public void afterPropertiesSet() throws Exception {
-        startConsumingClassifieds();
+        startConsumingWriteCommands();
     }
 
     @Override
     public void onMessage() {
         WriteClassifiedCommand command = classifiedsProducer.consume();
+        if (command == null) return;
         final Operation operation = command.getOperation();
         Classified classified = command.getClassified();
         switch (operation) {
@@ -56,4 +58,5 @@ public class ClassifiedsConsumer implements WriteClassifiedEventListener, Initia
                 throw new UnsupportedOperationException("Command operation '" + operation + "' not yet supported");
         }
     }
+
 }
