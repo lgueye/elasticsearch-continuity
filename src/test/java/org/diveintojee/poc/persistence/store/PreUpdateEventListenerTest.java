@@ -16,7 +16,7 @@ import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.*;
 
 /**
- * User: lgueye Date: 24/10/12 Time: 19:30
+ * User: louis.gueye@gmail.com Date: 24/10/12 Time: 19:30
  */
 @RunWith(MockitoJUnitRunner.class)
 public class PreUpdateEventListenerTest {

@@ -11,11 +11,11 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author louis.gueye@gmail.com
@@ -25,59 +25,6 @@ public class BaseDaoImpl implements BaseDao {
 
     @PersistenceContext(unitName = JpaConstants.PERSISTANCE_UNIT_NAME)
     private EntityManager entityManager;
-
-    /**
-     * @see BaseDao#countAll(Class)
-     */
-    @Override
-    public <T> int countAll(final Class<T> entityClass) {
-        return countByCriteria(entityClass);
-    }
-
-    /**
-     * @param <T>
-     * @param entityClass
-     * @param criterion
-     * @return
-     */
-    protected <T> int countByCriteria(final Class<T> entityClass, final Criterion... criterion) {
-        final Session session = (Session) this.entityManager.getDelegate();
-        final Criteria crit = session.createCriteria(entityClass);
-        crit.setProjection(Projections.rowCount());
-
-        for (final Criterion c : criterion)
-            crit.add(c);
-
-        return ((Long) crit.list().get(0)).intValue();
-    }
-
-    /**
-     * @see BaseDao#countByExample(Object)
-     */
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T> int countByExample(final T exampleInstance) {
-
-        final Session session = (Session) this.entityManager.getDelegate();
-
-        final Example example = Example.create(exampleInstance).excludeZeroes() // exclude
-                // zero
-                // valued
-                // properties
-                .ignoreCase() // perform case insensitive string comparisons
-                .enableLike(); // use like for string comparisons
-
-        final Criteria criteria = session.createCriteria(exampleInstance.getClass());
-
-        criteria.setProjection(Projections.rowCount());
-
-        criteria.add(example);
-
-        final List<Integer> list = criteria.list();
-
-        return list.get(0);
-
-    }
 
     /**
      * @see BaseDao#delete(Class, Object)
@@ -112,7 +59,7 @@ public class BaseDaoImpl implements BaseDao {
      * @param criterion
      * @return
      */
-    protected <T> List<T> findByCriteria(final Class<T> entityClass, final Criterion... criterion) {
+    <T> List<T> findByCriteria(final Class<T> entityClass, final Criterion... criterion) {
         return findByCriteria(entityClass, -1, -1, criterion);
     }
 
@@ -127,7 +74,7 @@ public class BaseDaoImpl implements BaseDao {
      * @return
      */
     @SuppressWarnings("unchecked")
-    protected <T> List<T> findByCriteria(final Class<T> entityClass, final int firstResult, final int maxResults,
+    <T> List<T> findByCriteria(final Class<T> entityClass, final int firstResult, final int maxResults,
                                          final Criterion... criterion) {
         final Session session = (Session) this.entityManager.getDelegate();
         final Criteria crit = session.createCriteria(entityClass);
@@ -142,61 +89,6 @@ public class BaseDaoImpl implements BaseDao {
             crit.setMaxResults(maxResults);
 
         final List<T> result = crit.list();
-        return result;
-    }
-
-    /**
-     * @see BaseDao#findByExample(Object)
-     */
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T> List<T> findByExample(final T exampleInstance) {
-
-        final Session session = (Session) this.entityManager.getDelegate();
-
-        final Example example = Example.create(exampleInstance).excludeZeroes() // exclude
-                // zero
-                // valued
-                // properties
-                .ignoreCase() // perform case insensitive string comparisons
-                .enableLike(MatchMode.ANYWHERE); // use like for string
-        // comparisons
-
-        final Criteria criteria = session.createCriteria(exampleInstance.getClass());
-
-        criteria.add(example);
-
-        return criteria.list();
-
-    }
-
-    /**
-     * @see BaseDao#findByNamedQuery(String, Object[])
-     */
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T> List<T> findByNamedQuery(final String name, final Object... params) {
-        final javax.persistence.Query query = this.entityManager.createNamedQuery(name);
-
-        for (int i = 0; i < params.length; i++)
-            query.setParameter((i + 1), params[i]);
-
-        final List<T> result = query.getResultList();
-        return result;
-    }
-
-    /**
-     * @see BaseDao#findByNamedQueryAndNamedParams(String, java.util.Map)
-     */
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T> List<T> findByNamedQueryAndNamedParams(final String name, final Map<String, ? extends Object> params) {
-        final javax.persistence.Query query = this.entityManager.createNamedQuery(name);
-
-        for (final Map.Entry<String, ? extends Object> param : params.entrySet())
-            query.setParameter(param.getKey(), param.getValue());
-
-        final List<T> result = query.getResultList();
         return result;
     }
 
@@ -230,14 +122,6 @@ public class BaseDaoImpl implements BaseDao {
     @Override
     public void persist(final Object entity) {
         this.entityManager.persist(entity);
-    }
-
-    /**
-     * @see BaseDao#refresh(Object)
-     */
-    @Override
-    public void refresh(Object entity) {
-        this.entityManager.refresh(entity, LockModeType.READ);
     }
 
 }

@@ -8,7 +8,7 @@
 	http://www.springframework.org/schema/tx  http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
 
     <import resource="classpath:elasticsearch-continuity-validation.xml"/>
-    <import resource="classpath:elasticsearch-continuity-messaging.xml"/>
+    <import resource="classpath:elasticsearch-continuity-integration.xml"/>
 
     <context:property-placeholder location="classpath:persistence.properties"/>
 
@@ -47,8 +47,6 @@
     </bean>
 
     <bean id="jsonMapper" class="org.codehaus.jackson.map.ObjectMapper"/>
-
-    <bean id="googleGeocoder" class="com.google.code.geocoder.Geocoder"/>
 
 </beans>
 

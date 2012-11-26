@@ -4,7 +4,7 @@ import com.google.common.base.Objects;
 import org.diveintojee.poc.domain.Classified;
 
 /**
- * User: lgueye Date: 22/11/12 Time: 11:40
+ * User: louis.gueye@gmail.com Date: 22/11/12 Time: 11:40
  */
 public class WriteClassifiedCommand {
 

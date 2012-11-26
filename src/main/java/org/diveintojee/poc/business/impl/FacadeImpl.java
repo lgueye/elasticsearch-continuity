@@ -56,15 +56,6 @@ public class FacadeImpl implements Facade {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
-    public void updateClassified(Long id, Classified classified) {
-        Classified persisted = readClassified(id);
-        persisted.setTitle(classified.getTitle());
-        persisted.setDescription(classified.getDescription());
-        this.validator.validate(persisted, ValidationContext.UPDATE);
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public Classified readClassified(Long id) {
         if (id == null) {

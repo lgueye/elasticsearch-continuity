@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 /**
- * User: lgueye Date: 24/10/12 Time: 19:27
+ * User: louis.gueye@gmail.com Date: 24/10/12 Time: 19:27
  */
 @RunWith(MockitoJUnitRunner.class)
 public class PostDeleteEventListenerTest {

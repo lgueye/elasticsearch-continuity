@@ -18,15 +18,6 @@
     <logger name="org.diveintojee.poc">
         <level value="${org.diveintojee.poc.log.level}"/>
     </logger>
-    <logger name="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-        <level value="${org.diveintojee.poc.log.level}"/>
-    </logger>
-    <logger name="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
-        <level value="${org.diveintojee.poc.log.level}"/>
-    </logger>
-    <logger name="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
-        <level value="${org.diveintojee.poc.log.level}"/>
-    </logger>
     <!-- Root Logger -->
     <root>
         <priority value="warn"/>

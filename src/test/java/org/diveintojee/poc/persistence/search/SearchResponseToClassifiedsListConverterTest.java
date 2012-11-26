@@ -18,7 +18,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * User: lgueye Date: 17/09/12 Time: 18:05
+ * User: louis.gueye@gmail.com Date: 17/09/12 Time: 18:05
  */
 @RunWith(MockitoJUnitRunner.class)
 public class SearchResponseToClassifiedsListConverterTest {

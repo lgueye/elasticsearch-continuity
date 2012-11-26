@@ -22,7 +22,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * User: lgueye Date: 17/09/12 Time: 17:44
+ * User: louis.gueye@gmail.com Date: 17/09/12 Time: 17:44
  */
 @RunWith(MockitoJUnitRunner.class)
 public class SearchEngineImplTest {

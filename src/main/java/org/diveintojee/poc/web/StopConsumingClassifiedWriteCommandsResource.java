@@ -8,7 +8,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 
 /**
- * User: lgueye Date: 22/11/12 Time: 15:26
+ * User: louis.gueye@gmail.com Date: 22/11/12 Time: 15:26
  */
 @Component
 @Path(StopConsumingClassifiedWriteCommandsResource.COLLECTION_RESOURCE_PATH)

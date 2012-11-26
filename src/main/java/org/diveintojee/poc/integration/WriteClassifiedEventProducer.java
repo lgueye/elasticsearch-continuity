@@ -1,7 +1,7 @@
 package org.diveintojee.poc.integration;
 
 /**
- * User: lgueye Date: 22/11/12 Time: 14:21
+ * User: louis.gueye@gmail.com Date: 22/11/12 Time: 14:21
  */
 public interface WriteClassifiedEventProducer {
 

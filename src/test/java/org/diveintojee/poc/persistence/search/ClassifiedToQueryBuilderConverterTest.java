@@ -13,7 +13,7 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 /**
- * User: lgueye Date: 17/09/12 Time: 15:04
+ * User: louis.gueye@gmail.com Date: 17/09/12 Time: 15:04
  */
 public class ClassifiedToQueryBuilderConverterTest {
 

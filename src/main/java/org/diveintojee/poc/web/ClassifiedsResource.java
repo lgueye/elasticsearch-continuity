@@ -38,7 +38,6 @@ public class ClassifiedsResource {
         final Long id = facade.createClassified(classified);
         final URI uri = uriInfo.getAbsolutePathBuilder().path(ClassifiedsResource.SINGLE_RESOURCE_PATH)
                 .build(String.valueOf(id));
-
         return Response.created(uri).build();
 
     }
@@ -48,7 +47,6 @@ public class ClassifiedsResource {
     public Response delete(@PathParam(value = "classifiedId") final Long classifiedId) throws Throwable {
 
         facade.deleteClassified(classifiedId);
-
         return Response.ok().build();
 
     }
@@ -59,7 +57,6 @@ public class ClassifiedsResource {
     public Response get(@PathParam(value = "classifiedId") final Long classifiedId) throws Throwable {
 
         final Classified classified = facade.readClassified(classifiedId);
-
         return Response.ok(classified).build();
 
     }

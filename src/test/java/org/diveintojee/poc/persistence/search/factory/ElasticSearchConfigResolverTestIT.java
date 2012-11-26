@@ -18,7 +18,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- * User: lgueye Date: 21/09/12 Time: 10:37
+ * User: louis.gueye@gmail.com Date: 21/09/12 Time: 10:37
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({TestConstants.SERVER_CONTEXT, TestConstants.SEARCH_CONTEXT_TEST})

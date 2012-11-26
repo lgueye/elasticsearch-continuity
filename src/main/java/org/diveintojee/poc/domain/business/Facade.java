@@ -20,8 +20,6 @@ public interface Facade {
 
     Classified readClassified(Long id);
 
-    void updateClassified(Long id, Classified classified);
-
     void deleteClassified(Long id);
 
     List<Classified> findClassifiedsByCriteria(Classified criteria);

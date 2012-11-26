@@ -68,18 +68,6 @@ public class FacadeImplTestIT {
     @Autowired
     private DropCreateIndexCommand dropCreateIndexCommand;
 
-//
-//    @Value("classpath:/elasticsearch/classifieds/_settings.json")
-//    private Resource indexSettings;
-//
-//    @Value("classpath:/elasticsearch/classifieds/classified.json")
-//    private Resource classifiedsMapping;
-//
-//    private static final String INDEX_NAME = SearchIndices.classifieds.toString();
-//    private static final String TYPE_NAME = SearchTypes.classified.toString();
-
-
-
     @Before
     public void onSetUpInTransaction() throws Exception {
         final Connection con = DataSourceUtils.getConnection(this.dataSource);
@@ -117,34 +105,6 @@ public class FacadeImplTestIT {
         Assert.assertNotNull(id);
         Assert.assertEquals(id, classified.getId());
         Assert.assertNotNull(this.facade.readClassified(id));
-
-    }
-
-    @Test
-    public void updateClassifiedShouldSucceed() throws Throwable {
-        // Given
-        Classified classified = TestFixtures.validClassified();
-        classified.setId(null);
-        // When
-        final Long id = this.facade.createClassified(classified);
-        // Then
-        Assert.assertNotNull(id);
-        Assert.assertEquals(id, classified.getId());
-        final String newTitle = "New Title";
-        final String newDescription = "Brand New Description";
-
-        // Given
-        classified.setTitle(newTitle);
-        classified.setDescription(newDescription);
-
-        // When
-        this.facade.updateClassified(id, classified);
-
-        classified = this.facade.readClassified(id);
-
-        // Then
-        Assert.assertEquals(newTitle, classified.getTitle());
-        Assert.assertEquals(newDescription, classified.getDescription());
 
     }
 

@@ -8,7 +8,7 @@ import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 
 /**
- * User: lgueye Date: 24/10/12 Time: 19:29
+ * User: louis.gueye@gmail.com Date: 24/10/12 Time: 19:29
  */
 public class PreDeleteEventListenerTest {
 
