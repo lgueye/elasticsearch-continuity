@@ -31,7 +31,6 @@ public class ElasticSearchConfigResolver {
         String nodeSettingsLocation = ELASTICSEARCH_CONFIGURATION_ROOT_FOLDER_NAME.concat(
             File.separator).concat("_settings.").concat(format);
         String settingsAsString = fileHelper.fileContentAsString(nodeSettingsLocation);
-//        System.out.println("resolved node settings = " + settingsAsString);
         config.put("settings", settingsAsString);
         Map<String, Object> indices = resolveIndicesConfig(rootFolder, format);
         config.putAll(indices);
@@ -47,14 +46,12 @@ public class ElasticSearchConfigResolver {
       String classpathElasticSearchRootPath = rootFolderAbsolutePath
           .substring(rootFolderAbsolutePath.lastIndexOf(File.separator), rootFolderAbsolutePath.length());
         if (ArrayUtils.isEmpty(folders)) {
-//            System.out.println("no children directory found under " + rootFolder);
             return indices;
         }
         // Iterating under /elasticsearch
         for (File folder : folders) {
             String indexPath = folder.getPath();
             String name = indexPath.substring(indexPath.lastIndexOf(File.separator) + 1, indexPath.length());
-//            System.out.println("resolved index name = " + name);
             final
             String
                 indexRelativePath =
@@ -63,9 +60,6 @@ public class ElasticSearchConfigResolver {
 
             String indexSettingsAsString = null;
             Collection<File> indexFiles = fileHelper.listFilesByExtension(folder, format);
-//            if (indexFiles.isEmpty()) {
-//                System.out.println("no document under " + indexPath + " found with extension " + format);
-//            }
             Iterator<File> indexFilesIterator = indexFiles.iterator();
             Map<String, Object> mappings = Maps.newHashMap();
             while (indexFilesIterator.hasNext()) {
@@ -73,14 +67,11 @@ public class ElasticSearchConfigResolver {
                 if (file.getAbsolutePath().contains("_settings.")) {
                     String indexSettingsLocation = indexRelativePath.concat(File.separator).concat("_settings.").concat(format);
                     indexSettingsAsString = fileHelper.fileContentAsString(indexSettingsLocation);
-//                    System.out.println("resolved index settings = " + indexSettingsAsString);
                 } else {
                     String mappingPath = file.getPath();
                     String type = mappingPath.substring(mappingPath.lastIndexOf(File.separator) + 1, mappingPath.indexOf("." + format));
-                    System.out.println("resolved index type = " + type);
                     String mappingRelativePath = indexRelativePath.concat(File.separator).concat(type).concat(".").concat(format);
                     final String mappingAsString = fileHelper.fileContentAsString(mappingRelativePath);
-//                    System.out.println("resolved mapping content = " + mappingAsString);
                     mappings.put(type, mappingAsString);
                 }
             }

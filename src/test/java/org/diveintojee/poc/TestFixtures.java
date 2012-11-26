@@ -47,12 +47,6 @@ public abstract class TestFixtures {
         final Set<ConstraintViolation<?>> constraintViolations = constraintViolationException.getConstraintViolations();
         Assert.assertNotNull(constraintViolations);
         Assert.assertEquals(1, CollectionUtils.size(constraintViolations));
-        // for (final ConstraintViolation<?> constraintViolation :
-        // constraintViolations) {
-        // System.out.println("---------------------------------------->" +
-        // constraintViolation.getMessage());
-        //
-        // }
         final ConstraintViolation<?> violation = constraintViolations.iterator().next();
         Assert.assertEquals(expectedMessage, violation.getMessage());
         Assert.assertEquals(expectedPath, violation.getPropertyPath().toString());

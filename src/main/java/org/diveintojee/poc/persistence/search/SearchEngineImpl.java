@@ -85,7 +85,6 @@ public class SearchEngineImpl implements SearchEngine {
         List<Classified> classifieds = baseDao.findAll(Classified.class);
         final IndicesAdminClient indicesAdminClient = elasticSearch.admin().indices();
         Map<String, Object> config = elasticSearchConfigResolver.resolveElasticsearchConfig("json");
-        System.out.println("config = " + config);
         String indexRootName = SearchIndices.classifieds.toString();
         Map<String, Object> index = (Map<String, Object>) config.get(indexRootName);
         String newIndexName = dropCreateIndexCommand.execute(indicesAdminClient, indexRootName, index);
@@ -104,7 +103,6 @@ public class SearchEngineImpl implements SearchEngine {
         }
 
         final BulkResponse bulkResponse = bulkRequestBuilder.execute().actionGet();
-        System.out.println(String.format("Bulk index of %d classifieds took %d ms", classifieds.size(), bulkResponse.tookInMillis()));
         LoggerFactory.getLogger(SearchEngineImpl.class).info("Bulk index of {} classifieds took {} ms", classifieds.size(), bulkResponse.tookInMillis());
 
     }

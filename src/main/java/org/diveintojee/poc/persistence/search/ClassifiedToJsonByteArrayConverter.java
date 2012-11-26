@@ -35,6 +35,5 @@ public class ClassifiedToJsonByteArrayConverter implements Converter<Classified,
         } catch (final Throwable th) {
             throw new IllegalArgumentException(th);
         }
-        // System.out.println("source as string = " + string);
     }
 }

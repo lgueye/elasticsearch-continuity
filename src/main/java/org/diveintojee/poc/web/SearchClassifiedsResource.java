@@ -39,7 +39,6 @@ public class SearchClassifiedsResource {
     public Response find(final Classified criteria) throws Throwable {
 
         final List<Classified> results = facade.findClassifiedsByCriteria(criteria);
-        System.out.println("results = " + results);
 
         final GenericEntity<List<Classified>> entity = new GenericEntity<List<Classified>>(results) {
         };

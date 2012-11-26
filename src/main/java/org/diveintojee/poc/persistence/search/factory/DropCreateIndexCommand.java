@@ -37,9 +37,7 @@ public class DropCreateIndexCommand {
 
     public String execute(IndicesAdminClient indicesAdminClient, String indexRootName, Map<String, Object> index) {
         String oldIndexName = resolveOldIndexName(indicesAdminClient, indexRootName);
-        System.out.println("resolved oldIndexName = " + oldIndexName);
         String newIndexName = resolveNewIndexName(oldIndexName, indexRootName);
-        System.out.println("resolved newIndexName = " + newIndexName);
         String settings = (String) index.get("settings");
         CreateIndexResponse
                 createIndexResponse =

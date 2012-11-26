@@ -32,7 +32,6 @@ public class JsonByteArrayToClassifiedConverter implements Converter<byte[], Cla
         try {
             this.jsonMapper.getDeserializationConfig()
                     .without(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES);
-            // System.out.write(source);
             final Classified classified = this.jsonMapper.readValue(source, Classified.class);
             return classified;
         } catch (final IOException ignored) {
