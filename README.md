@@ -5,7 +5,7 @@ Project that validates elasticsearch continuity of service at re-index
 
 main scenario
 -------------
-
+<pre>
 Scenario: search classified by title should succeed
 Given I create the following classifieds:
 | title           | description         |
@@ -38,6 +38,8 @@ And I search for classifieds which "title" matches "whatever"
 Then I should get the following classifieds:
 | title           | description          |
 | whatever title  | whatever description |
+</pre>
+
 
 run project
 -----------
