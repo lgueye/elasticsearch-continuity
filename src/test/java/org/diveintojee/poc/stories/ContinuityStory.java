@@ -5,7 +5,6 @@ package org.diveintojee.poc.stories;
 
 import org.diveintojee.poc.steps.ContinuitySteps;
 import org.diveintojee.poc.steps.Exchange;
-import org.diveintojee.poc.web.SearchClassifiedsResource;
 import org.jbehave.core.io.CodeLocations;
 import org.jbehave.core.io.StoryFinder;
 import org.jbehave.core.steps.InjectableStepsFactory;
@@ -26,8 +25,7 @@ public class ContinuityStory extends AbstractJUnitStories {
 
     @Override
     protected List<String> storyPaths() {
-        List<String> paths = new StoryFinder().findPaths(CodeLocations.codeLocationFromClass(
-                SearchClassifiedsResource.class).getFile(),
+        List<String> paths = new StoryFinder().findPaths(CodeLocations.codeLocationFromClass(getClass()).getFile(),
                 Arrays.asList("**/continuity.story"), null);
         return paths;
     }
