@@ -1,5 +1,6 @@
 package org.diveintojee.poc.persistence.search.factory;
 
+import org.elasticsearch.action.admin.indices.alias.IndicesAliasesRequestBuilder;
 import org.elasticsearch.action.admin.indices.alias.IndicesAliasesResponse;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
@@ -53,31 +54,39 @@ public class DropCreateIndexCommand {
             String mappingSource = mappings.get(type);
             PutMappingResponse
                     putMappingResponse =
-                    indicesAdminClient.preparePutMapping(newIndexName).setSource(mappingSource).setType(
-                            type)
-                            .execute().actionGet();
+                    indicesAdminClient.preparePutMapping(newIndexName)
+                        .setSource(mappingSource)
+                        .setType(type)
+                        .execute().actionGet();
             if (!putMappingResponse.acknowledged()) {
                 throw new RuntimeException("Failed to put mapping '" + type + "' for index '" + newIndexName + "'");
             }
 
         }
 
-        final
-        IndicesAliasesResponse
-                indicesAddAliasesResponse =
-                indicesAdminClient.prepareAliases().addAlias(newIndexName, indexRootName)
-                        .execute().actionGet();
+        final IndicesAliasesRequestBuilder indicesAliasesRequestBuilder = indicesAdminClient.prepareAliases();
+
+        final IndicesAliasesResponse indicesAddAliasesResponse =
+              indicesAliasesRequestBuilder
+                  .addAlias(newIndexName, indexRootName)
+                  .execute()
+                  .actionGet();
+
         if (!indicesAddAliasesResponse.acknowledged()) {
             throw new RuntimeException("Failed to add index '" + newIndexName + "' to alias '" + indexRootName + "'");
         }
 
-        final boolean oldIndexExists = indicesAdminClient.prepareExists(oldIndexName).execute().actionGet().exists();
+        final boolean oldIndexExists = indicesAdminClient
+            .prepareExists(oldIndexName)
+            .execute()
+            .actionGet()
+            .exists();
 
         if (oldIndexExists) {
             final
             IndicesAliasesResponse
                     indicesAliasesRemoveResponse =
-                    indicesAdminClient.prepareAliases().removeAlias(oldIndexName, indexRootName)
+                    indicesAliasesRequestBuilder.removeAlias(oldIndexName, indexRootName)
                             .execute().actionGet();
 
             if (!indicesAliasesRemoveResponse.acknowledged()) {
