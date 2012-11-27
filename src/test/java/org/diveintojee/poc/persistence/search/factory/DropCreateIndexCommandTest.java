@@ -152,6 +152,8 @@ public class DropCreateIndexCommandTest {
         when(listenableActionFutureB.actionGet()).thenReturn(indexBExistsResponse);
         when(indexBExistsResponse.exists()).thenReturn(false);
 
+        when(indicesAdminClient.prepareCreate(indexRootName + "-b")).thenReturn()
+
         underTest.execute(indicesAdminClient, indexRootName, indexConfig);
     }
 }
