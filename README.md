@@ -44,5 +44,6 @@ Then I should get the following classifieds:
 run project
 -----------
 
-* make sure you have elasticsearch running on http://localhost:9200 (download .deb [here] (https://github.com/elasticsearch/elasticsearch/downloads)
-* mvn clean install -Pacceptance-wip
+* mvn clean test (runs unit tests)
+* mvn clean verify -Pit-tests (runs unit+it tests, runs in-memory elasticsearch)
+* mvn clean install -Pacceptance-wip (runs unit+it+acceptance tests, assumes an elasticsearch instance on http://localhost:9200, download .deb [here] (https://github.com/elasticsearch/elasticsearch/downloads))
