@@ -6,16 +6,11 @@ package org.diveintojee.poc.persistence.store;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Example;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Projections;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 /**
  * @author louis.gueye@gmail.com
@@ -75,7 +70,7 @@ public class BaseDaoImpl implements BaseDao {
      */
     @SuppressWarnings("unchecked")
     <T> List<T> findByCriteria(final Class<T> entityClass, final int firstResult, final int maxResults,
-                                         final Criterion... criterion) {
+                               final Criterion... criterion) {
         final Session session = (Session) this.entityManager.getDelegate();
         final Criteria crit = session.createCriteria(entityClass);
 

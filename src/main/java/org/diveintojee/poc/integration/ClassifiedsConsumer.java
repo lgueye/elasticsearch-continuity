@@ -54,8 +54,6 @@ public class ClassifiedsConsumer implements WriteClassifiedEventListener, Initia
             case write:
                 searchEngine.index(classified);
                 break;
-            default:
-                throw new UnsupportedOperationException("Command operation '" + operation + "' not yet supported");
         }
     }
 

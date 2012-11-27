@@ -33,8 +33,6 @@ public class ElasticSearchClientFactoryBean extends AbstractFactoryBean<Client> 
 
     private List<String> nodes;
 
-    private Resource nodeConfigLocation;
-
     private IndicesUpdateStrategy indicesUpdateStrategy;
 
     private String configFormat;
@@ -88,25 +86,6 @@ public class ElasticSearchClientFactoryBean extends AbstractFactoryBean<Client> 
     }
 
     /**
-     * Optional
-     * Defaults to "classpath:elasticsearch/_settings.json"<br/>
-     * <p/>
-     * <pre>
-     *     {@code
-     *     <property name="nodeConfigLocation" value="classpath:/elasticsearch/_settings.json"/>
-     *     }
-     * </pre>
-     * <p/>
-     * That file is a suitable place to specify "cluster.name" property which defaults to "elasticsearch"
-     *
-     * @see <a href="http://www.elasticsearch.org/guide/reference/modules/discovery/">Elastisearch
-     *      discovery module</a>
-     */
-    public void setNodeConfigLocation(Resource nodeConfigLocation) {
-        this.nodeConfigLocation = nodeConfigLocation;
-    }
-
-    /**
      * newIndexName
      * Optional
      * Defaults to dropcreate
@@ -157,7 +136,7 @@ public class ElasticSearchClientFactoryBean extends AbstractFactoryBean<Client> 
         if (Strings.isNullOrEmpty(configFormat))
             configFormat = "json";
 
-        Map<String, Object> config = elasticSearchConfigResolver.resolveElasticsearchConfig(configFormat);
+        Map<String, Object> config = elasticSearchConfigResolver.getConfig();
 
         if (indicesUpdateStrategy == null)
             indicesUpdateStrategy = IndicesUpdateStrategy.dropcreate;
@@ -189,16 +168,18 @@ public class ElasticSearchClientFactoryBean extends AbstractFactoryBean<Client> 
                     + ": 'typology' property is required. Between "
                     + ElasticSearchClientTypology.values());
 
+        if (Strings.isNullOrEmpty(configFormat))
+            configFormat = "json";
 
-        if (nodeConfigLocation == null)
-            nodeConfigLocation = new ClassPathResource("/elasticsearch/_settings.json");
-
+        elasticSearchConfigResolver.resolveElasticsearchConfig(configFormat);
+        Map<String, Object> config = elasticSearchConfigResolver.getConfig();
+        String settingsSource = (String) config.get("settings");
 
         switch (typology) {
 
             case local:
                 NodeBuilder nodeBuilder = NodeBuilder.nodeBuilder();
-                nodeBuilder.settings().loadFromUrl(nodeConfigLocation.getURL());
+                nodeBuilder.settings().loadFromSource(settingsSource);
                 node = nodeBuilder.node();
                 elasticsearch = node.client();
                 break;
@@ -211,7 +192,7 @@ public class ElasticSearchClientFactoryBean extends AbstractFactoryBean<Client> 
                 }
                 Collection<InetSocketTransportAddress> addresses = fromNodes(nodes);
                 ImmutableSettings.Builder builder = ImmutableSettings.settingsBuilder();
-                builder.loadFromUrl(nodeConfigLocation.getURL());
+                builder.loadFromSource(settingsSource);
                 builder.put("client.transport.sniff", true);
                 elasticsearch = new TransportClient(builder.build());
                 for (InetSocketTransportAddress address : addresses) {

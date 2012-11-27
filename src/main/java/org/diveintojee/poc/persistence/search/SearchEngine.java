@@ -11,9 +11,9 @@ import java.util.List;
  */
 public interface SearchEngine {
 
-    String INDEX_NAME = SearchIndices.classifieds.toString();
+    String CLASSIFIEDS_ALIAS = SearchIndices.classifieds.toString();
 
-    String CLASSIFIED_TYPE_NAME = SearchTypes.classified.toString();
+    String CLASSIFIED_TYPE = SearchTypes.classified.toString();
 
     List<Classified> findClassifiedsByCriteria(Classified criteria);
 

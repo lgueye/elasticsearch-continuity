@@ -101,9 +101,9 @@ public class FacadeImpl implements Facade {
         searchEngine.reIndexClassifieds();
     }
 
-  @Override
-  public void startConsumingClassifiedsWriteCommands() {
-      classifiedsConsumer.startConsumingWriteCommands();
+    @Override
+    public void startConsumingClassifiedsWriteCommands() {
+        classifiedsConsumer.startConsumingWriteCommands();
     }
 
     @Override

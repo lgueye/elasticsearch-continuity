@@ -81,7 +81,7 @@ public class FacadeImplTestIT {
             DataSourceUtils.releaseConnection(con, this.dataSource);
         }
 
-        Map<String, Object> config = elasticSearchConfigResolver.resolveElasticsearchConfig("json");
+        Map<String, Object> config = elasticSearchConfigResolver.getConfig();
 
         for (String indexRootName : config.keySet()) {
             if (!"settings".equalsIgnoreCase(indexRootName)) {

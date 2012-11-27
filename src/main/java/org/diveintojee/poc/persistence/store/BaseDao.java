@@ -4,7 +4,6 @@
 package org.diveintojee.poc.persistence.store;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author louis.gueye@gmail.com

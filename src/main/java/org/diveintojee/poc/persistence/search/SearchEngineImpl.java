@@ -7,6 +7,7 @@ import org.diveintojee.poc.persistence.search.factory.ElasticSearchConfigResolve
 import org.diveintojee.poc.persistence.store.BaseDao;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
@@ -55,8 +56,8 @@ public class SearchEngineImpl implements SearchEngine {
     public List<Classified> findClassifiedsByCriteria(Classified criteria) {
         QueryBuilder queryBuilder = classifiedCriteriaToQueryBuilderConverter.convert(criteria);
         SearchResponse searchResponse = elasticSearch
-                .prepareSearch(INDEX_NAME)
-                .setTypes(CLASSIFIED_TYPE_NAME)
+                .prepareSearch(CLASSIFIEDS_ALIAS)
+                .setTypes(CLASSIFIED_TYPE)
                 .setQuery(queryBuilder)
                 .addSort(SortBuilders.fieldSort("created").order(SortOrder.DESC))
                 .addSort(SortBuilders.fieldSort("updated").order(SortOrder.DESC))
@@ -68,14 +69,25 @@ public class SearchEngineImpl implements SearchEngine {
     public void index(AbstractEntity entity) {
         if (entity instanceof Classified) {
             byte[] classifiedAsBytes = classifiedToByteArrayConverter.convert((Classified) entity);
-            elasticSearch.prepareIndex(INDEX_NAME, CLASSIFIED_TYPE_NAME).setId(entity.getId().toString()).setSource(classifiedAsBytes).setRefresh(true).execute().actionGet();
+            Map<String, Object> config = elasticSearchConfigResolver.getConfig();
+            Map<String, Object> index = (Map<String, Object>) config.get(CLASSIFIEDS_ALIAS);
+            String writeIndex = (String) index.get("write-index");
+            elasticSearch
+                    .prepareIndex(writeIndex, CLASSIFIED_TYPE, entity.getId().toString())
+                    .setSource(classifiedAsBytes)
+                    .setRefresh(true).execute().actionGet();
         }
     }
 
     @Override
     public void removeFromIndex(AbstractEntity entity) {
         if (entity instanceof Classified) {
-            elasticSearch.prepareDelete(INDEX_NAME, CLASSIFIED_TYPE_NAME, entity.getId().toString()).setRefresh(true).execute().actionGet();
+            Map<String, Object> config = elasticSearchConfigResolver.getConfig();
+            Map<String, Object> index = (Map<String, Object>) config.get(CLASSIFIEDS_ALIAS);
+            String writeIndex = (String) index.get("write-index");
+            elasticSearch
+                    .prepareDelete(writeIndex, CLASSIFIED_TYPE, entity.getId().toString())
+                    .setRefresh(true).execute().actionGet();
         }
     }
 
@@ -84,26 +96,25 @@ public class SearchEngineImpl implements SearchEngine {
     public void reIndexClassifieds() throws IOException {
         List<Classified> classifieds = baseDao.findAll(Classified.class);
         final IndicesAdminClient indicesAdminClient = elasticSearch.admin().indices();
-        Map<String, Object> config = elasticSearchConfigResolver.resolveElasticsearchConfig("json");
-        String indexRootName = SearchIndices.classifieds.toString();
-        Map<String, Object> index = (Map<String, Object>) config.get(indexRootName);
-        String newIndexName = dropCreateIndexCommand.execute(indicesAdminClient, indexRootName, index);
+        Map<String, Object> config = elasticSearchConfigResolver.getConfig();
+        Map<String, Object> index = (Map<String, Object>) config.get(CLASSIFIEDS_ALIAS);
+        dropCreateIndexCommand.execute(indicesAdminClient, CLASSIFIEDS_ALIAS, index);
+        String writeIndex = (String) index.get("write-index");
         final String type = SearchTypes.classified.toString();
 
         // Bulk index
         final BulkRequestBuilder bulkRequestBuilder = elasticSearch.prepareBulk();
         for (Classified classified : classifieds) {
-          byte[] classifiedAsBytes = classifiedToByteArrayConverter.convert(classified);
-          final
-            IndexRequestBuilder
-                    indexRequestBuilder =
-                    elasticSearch.prepareIndex(newIndexName, type,
-                            classified.getId().toString()).setSource(classifiedAsBytes);
+            byte[] classifiedAsBytes = classifiedToByteArrayConverter.convert(classified);
+            final IndexRequestBuilder indexRequestBuilder = elasticSearch
+                    .prepareIndex(writeIndex, type, classified.getId().toString())
+                    .setSource(classifiedAsBytes);
             bulkRequestBuilder.add(indexRequestBuilder);
         }
 
         final BulkResponse bulkResponse = bulkRequestBuilder.execute().actionGet();
-        LoggerFactory.getLogger(SearchEngineImpl.class).info("Bulk index of {} classifieds took {} ms", classifieds.size(), bulkResponse.tookInMillis());
+        LoggerFactory.getLogger(SearchEngineImpl.class)
+                .info("Bulk index of {} classifieds took {} ms", classifieds.size(), bulkResponse.tookInMillis());
 
     }
 

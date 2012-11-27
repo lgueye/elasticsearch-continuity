@@ -10,5 +10,5 @@ target/
 *.iws
 projectFilesBackup
 .idea
-
+data
 

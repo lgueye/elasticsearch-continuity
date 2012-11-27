@@ -9,6 +9,7 @@ import org.diveintojee.poc.domain.business.Facade;
 import org.diveintojee.poc.domain.business.Validator;
 import org.diveintojee.poc.domain.exceptions.BusinessException;
 import org.diveintojee.poc.domain.validation.ValidationContext;
+import org.diveintojee.poc.integration.ClassifiedsConsumer;
 import org.diveintojee.poc.persistence.search.SearchEngine;
 import org.diveintojee.poc.persistence.store.BaseDao;
 import org.junit.Test;
@@ -18,6 +19,8 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.io.IOException;
 
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.*;
@@ -36,6 +39,10 @@ public class FacadeImplTest {
 
     @Mock
     private SearchEngine searchEngine;
+
+    @Mock
+    private ClassifiedsConsumer classifiedsConsumer;
+
 
     @InjectMocks
     private Facade underTest = new FacadeImpl();
@@ -164,6 +171,27 @@ public class FacadeImplTest {
     @Test(expected = IllegalArgumentException.class)
     public void readClassifiedShouldThrowIllegalArgumentExceptionWhithNullId() {
         this.underTest.readClassified(null);
+    }
+
+    @Test
+    public void fullReIndexClassifiedsShouldSucceed() throws IOException {
+        underTest.fullReIndexClassifieds();
+        verify(searchEngine).reIndexClassifieds();
+        verifyNoMoreInteractions(searchEngine);
+    }
+
+    @Test
+    public void startConsumingClassifiedsWriteCommandsShouldSucceed() throws IOException {
+        underTest.startConsumingClassifiedsWriteCommands();
+        verify(classifiedsConsumer).startConsumingWriteCommands();
+        verifyNoMoreInteractions(classifiedsConsumer);
+    }
+
+    @Test
+    public void stopConsumingClassifiedsWriteCommandsShouldSucceed() throws IOException {
+        underTest.stopConsumingClassifiedsWriteCommands();
+        verify(classifiedsConsumer).stopConsumingWriteCommands();
+        verifyNoMoreInteractions(classifiedsConsumer);
     }
 
 }

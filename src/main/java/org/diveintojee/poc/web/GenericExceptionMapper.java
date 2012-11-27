@@ -39,15 +39,15 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable> {
         final String preferredResponseMediaType = this.request.getHeader("Accept");
 
         final boolean shouldUseDefaultMediaType = StringUtils.isNotEmpty(preferredResponseMediaType)
-                          && !ExceptionConverter.SUPPORTED_MEDIA_TYPES
-            .contains(preferredResponseMediaType);
+                && !ExceptionConverter.SUPPORTED_MEDIA_TYPES
+                .contains(preferredResponseMediaType);
 
         if (shouldUseDefaultMediaType) {
             LoggerFactory.getLogger(GenericExceptionMapper.class).debug(
-                      "Preferred Media type {} not supported, using default {}", preferredResponseMediaType,
-                      ExceptionConverter.DEFAULT_MEDIA_TYPE);
+                    "Preferred Media type {} not supported, using default {}", preferredResponseMediaType,
+                    ExceptionConverter.DEFAULT_MEDIA_TYPE);
             return Response.status(error.getHttpStatus()).header("Content-Type", ExceptionConverter.DEFAULT_MEDIA_TYPE)
-                      .entity(error).build();
+                    .entity(error).build();
         }
 
         return Response.status(error.getHttpStatus()).entity(error).build();

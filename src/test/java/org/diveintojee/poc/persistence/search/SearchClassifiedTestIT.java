@@ -8,6 +8,8 @@ import com.google.common.io.Resources;
 import org.diveintojee.poc.TestConstants;
 import org.diveintojee.poc.TestFixtures;
 import org.diveintojee.poc.domain.Classified;
+import org.diveintojee.poc.persistence.search.factory.DropCreateIndexCommand;
+import org.diveintojee.poc.persistence.search.factory.ElasticSearchConfigResolver;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
@@ -30,6 +32,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 
+import java.util.Map;
+
+import static org.diveintojee.poc.persistence.search.SearchEngine.CLASSIFIEDS_ALIAS;
+import static org.diveintojee.poc.persistence.search.SearchEngine.CLASSIFIED_TYPE;
 import static org.junit.Assert.*;
 
 /**
@@ -48,39 +54,30 @@ public class SearchClassifiedTestIT {
     @Qualifier(JsonByteArrayToClassifiedConverter.BEAN_ID)
     private JsonByteArrayToClassifiedConverter jsonByteArrayToClassifiedConverter;
 
-    private static final String INDEX_NAME = SearchIndices.classifieds.toString();
-    private static final String TYPE_NAME = SearchTypes.classified.toString();
-
-    @Value("classpath:/elasticsearch/classifieds/_settings.json")
-    private Resource indexSettings;
-
-    @Value("classpath:/elasticsearch/classifieds/classified.json")
-    private Resource classifiedsMapping;
-
     @Autowired
     private Client underTest;
+
+    @Autowired
+    private ElasticSearchConfigResolver elasticSearchConfigResolver;
+
+    @Autowired
+    private DropCreateIndexCommand dropCreateIndexCommand;
+
+    @Autowired
+    private SearchEngine searchEngine;
 
     @Before
     public void configureSearchEngine() throws Exception {
 
-        // Deletes index if already exists
-        if (this.underTest.admin().indices().prepareExists(INDEX_NAME).execute().actionGet().exists()) {
-            DeleteIndexResponse deleteIndexResponse = this.underTest.admin().indices().prepareDelete(INDEX_NAME)
-                    .execute().actionGet();
-            deleteIndexResponse.acknowledged();
+        Map<String, Object> config = elasticSearchConfigResolver.getConfig();
+
+        for (String indexRootName : config.keySet()) {
+            if (!"settings".equalsIgnoreCase(indexRootName)) {
+                Map<String, Object> index = (Map<String, Object>) config.get(indexRootName);
+                dropCreateIndexCommand.execute(underTest.admin().indices(), indexRootName, index);
+            }
         }
-
-        String indexSettingsAsString = Resources.toString(this.indexSettings.getURL(), Charsets.UTF_8);
-        CreateIndexResponse createIndexResponse = this.underTest.admin().indices().prepareCreate(INDEX_NAME)
-                .setSettings(indexSettingsAsString).execute().actionGet();
-        createIndexResponse.acknowledged();
-
-        String classifiedMappingAsString = Resources.toString(this.classifiedsMapping.getURL(), Charsets.UTF_8);
-        PutMappingResponse putMappingResponse = this.underTest.admin().indices().preparePutMapping(INDEX_NAME)
-                .setType(TYPE_NAME).setSource(classifiedMappingAsString).execute().actionGet();
-        putMappingResponse.acknowledged();
-
-        //this.underTest.admin().cluster().prepareHealth(INDEX_NAME).setWaitForYellowStatus().execute().actionGet();
+        //this.underTest.admin().cluster().prepareHealth(CLASSIFIEDS_ALIAS).setWaitForYellowStatus().execute().actionGet();
     }
 
     @Test
@@ -173,12 +170,12 @@ public class SearchClassifiedTestIT {
 
     private SearchResponse findByTitle(final String query) {
         QueryStringQueryBuilder queryString = QueryBuilders.queryString(query).field(ClassifiedSearchFieldsRegistry.TITLE);
-        return this.underTest.prepareSearch(INDEX_NAME).setTypes(TYPE_NAME).setQuery(queryString).execute().actionGet();
+        return this.underTest.prepareSearch(SearchEngine.CLASSIFIEDS_ALIAS).setTypes(CLASSIFIED_TYPE).setQuery(queryString).execute().actionGet();
     }
 
     private SearchResponse findByDescription(final String query) {
         QueryStringQueryBuilder queryString = QueryBuilders.queryString(query).field(ClassifiedSearchFieldsRegistry.DESCRIPTION);
-        return this.underTest.prepareSearch(INDEX_NAME).setTypes(TYPE_NAME).setQuery(queryString).execute().actionGet();
+        return this.underTest.prepareSearch(CLASSIFIEDS_ALIAS).setTypes(CLASSIFIED_TYPE).setQuery(queryString).execute().actionGet();
     }
 
     /**
@@ -186,10 +183,8 @@ public class SearchClassifiedTestIT {
      * @param classified
      */
     private void indexClassified(final Long id, final Classified classified) {
-        this.underTest.prepareIndex(INDEX_NAME, TYPE_NAME)//
-                .setRefresh(true) //
-                .setSource(this.classifiedToJsonByteArrayConverter.convert(classified)) //
-                .execute().actionGet();
+        classified.setId(id);
+        searchEngine.index(classified);
     }
 
     private void assertHitsCount(final int expectedHitsCount, final SearchResponse actualResponse) {

@@ -5,6 +5,7 @@ import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 import org.elasticsearch.client.IndicesAdminClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -35,7 +36,7 @@ public class DropCreateIndexCommand {
         return oldIndexName;
     }
 
-    public String execute(IndicesAdminClient indicesAdminClient, String indexRootName, Map<String, Object> index) {
+    public void execute(IndicesAdminClient indicesAdminClient, String indexRootName, Map<String, Object> index) {
         String oldIndexName = resolveOldIndexName(indicesAdminClient, indexRootName);
         String newIndexName = resolveNewIndexName(oldIndexName, indexRootName);
         String settings = (String) index.get("settings");
@@ -91,6 +92,6 @@ public class DropCreateIndexCommand {
             }
         }
 
-        return newIndexName;
+        index.put("write-index", newIndexName);
     }
 }
