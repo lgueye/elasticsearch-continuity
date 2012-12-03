@@ -46,4 +46,6 @@ run project
 
 * mvn clean test (runs unit tests)
 * mvn clean verify -Pit-tests (runs unit+it tests, runs in-memory elasticsearch)
-* mvn clean install -Pacceptance-wip (runs unit+it+acceptance tests, assumes an elasticsearch instance on http://localhost:9200, download .deb [here] (https://github.com/elasticsearch/elasticsearch/downloads))
+* make sure you have elasticsearch running on http://localhost:9200 (download .deb [here] (https://github.com/elasticsearch/elasticsearch/downloads)
+* edit src/main/resources/elasticsearch/_settings.json and replace cluster.name=lgueye to the suitable value (defaults to 'elasticsearch' if you didn't edit anything in it in /etc/elasticsearch/elasticsearch.yml
+* mvn clean install -Pacceptance-wip (runs unit+it+acceptance tests)
